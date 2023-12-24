@@ -10,14 +10,20 @@ generator client {
 generator pothos {
   provider     = "prisma-pothos-types"
   clientOutput = "@prisma/client"
-  // output       = "./generated.d.ts" // TODO: decide if I should version control this
+  output       = "./generated/pothos.d.ts"
 }
 
-model User {
-  id String @id
-  // characters Character[] @relation("3")
-  // voices     Voice[]     @relation("4")
+generator kysely {
+  provider = "prisma-kysely"
+  output   = "./generated"
+  fileName = "kysely.d.ts"
 }
+
+// model User {
+//   id String @id
+//   // characters Character[] @relation("3")
+//   // voices     Voice[]     @relation("4")
+// }
 
 // model Character {
 //   id      String  @id
@@ -78,35 +84,37 @@ model User {
 // }
 
 model VoiceModel {
-  id                       String           @id
+  id                       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   // type                     String // RVC v1 | RVC v2
   filesize                 Int // Bytes
-  checksumMD5ForAdded      String
-  checksumMD5ForWeights    String
-  checksumSHA256ForAdded   String
-  checksumSHA256ForWeights String
+  checksumMD5ForAdded      String @unique
+  checksumMD5ForWeights    String @unique
+  checksumSHA256ForAdded   String @unique
+  checksumSHA256ForWeights String @unique
   // characterId              String?
-  sourceModelId            String?          @unique
+
   // character                Character?            @relation(fields: [characterId], references: [id], name: "2")
-  sourceModel              VoiceModelAIHub? @relation(fields: [sourceModelId], references: [id], name: "3")
+  sourceModel AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
 }
 
-model VoiceModelAIHub {
-  id            String                @id
-  downloadCount Int
-  name          String?
-  filename      String
-  creatorText       String
-  version       String // RVC v2 | RVC v1
-  derivedModel  VoiceModel?           @relation("3")
-  backupUrls    VoiceModelBackupUrl[] @relation("1")
+model AIHubVoiceModel {
+  id             String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  downloadCount  Int
+  name           String?
+  filename       String
+  creatorText    String?
+  version        String // RVC v2 | RVC v1
+  // TODO: make derivedModelId required
+  derivedModelId String?               @unique @db.Uuid
+  derivedModel   VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
+  backupUrls     VoiceModelBackupUrl[] @relation("1")
 }
 
 // VoiceModelAIHubBackupUrlsConnection
 
 model VoiceModelBackupUrl {
-  id           String          @id
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url          String          @unique
-  voiceModelId String
-  voiceModel   VoiceModelAIHub @relation(fields: [voiceModelId], references: [id], name: "1")
+  voiceModelId String          @db.Uuid
+  voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "1")
 }
