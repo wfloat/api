@@ -84,17 +84,26 @@ generator kysely {
 // }
 
 model VoiceModel {
-  id                       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   // type                     String // RVC v1 | RVC v2
   filesize                 Int // Bytes
-  checksumMD5ForAdded      String @unique
-  checksumMD5ForWeights    String @unique
-  checksumSHA256ForAdded   String @unique
-  checksumSHA256ForWeights String @unique
+  checksumMD5ForAdded      String            @unique
+  checksumMD5ForWeights    String            @unique
+  checksumSHA256ForAdded   String            @unique
+  checksumSHA256ForWeights String            @unique
+  modelConfig              VoiceModelConfig? // ctx.loaders.modelConfigFromVoiceModel.load(id)
   // characterId              String?
 
   // character                Character?            @relation(fields: [characterId], references: [id], name: "2")
-  sourceModel AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
+  sourceModel    AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
+  textToSpeeches TextToSpeech[]   @relation("4")
+}
+
+// or "ModelParams"
+model VoiceModelConfig {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  voiceModelId String     @unique @db.Uuid
+  voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id]) // ctx.loaders.voiceModel.load(voiceModelId)
 }
 
 model AIHubVoiceModel {
@@ -117,4 +126,13 @@ model VoiceModelBackupUrl {
   url          String          @unique
   voiceModelId String          @db.Uuid
   voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "1")
+}
+
+// Or just "Speech"
+model TextToSpeech {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inputText    String
+  ouputUrl     String
+  voiceModelId String     @db.Uuid
+  voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "4")
 }
