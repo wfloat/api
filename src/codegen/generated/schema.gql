@@ -1,0 +1,140 @@
+type AIHubVoiceModel {
+  backupUrls(after: String, before: String, first: Int, last: Int): AIHubVoiceModelBackupUrlsConnection!
+  creatorText: String
+  derivedModel: VoiceModel
+  derivedModelId: ID
+  downloadCount: Int!
+  filename: String!
+  id: ID!
+  name: String
+  version: String!
+}
+
+type AIHubVoiceModelBackupUrlsConnection {
+  edges: [AIHubVoiceModelBackupUrlsEdge]!
+  pageInfo: PageInfo!
+}
+
+type AIHubVoiceModelBackupUrlsEdge {
+  cursor: String!
+  node: VoiceModelBackupUrl!
+}
+
+type AIHubVoiceModelsConnection {
+  edges: [AIHubVoiceModelsEdge]!
+  pageInfo: PageInfo!
+}
+
+type AIHubVoiceModelsEdge {
+  cursor: String!
+  node: AIHubVoiceModel!
+}
+
+input CreateAIHubVoiceModelInput {
+  creatorText: String
+  derivedModelId: ID
+  downloadCount: Int!
+  filename: String!
+  name: String
+  version: String!
+}
+
+input CreateVoiceModelBackupUrlInput {
+  url: String!
+  voiceModelId: ID!
+}
+
+input CreateVoiceModelInput {
+  checksumMD5ForAdded: String!
+  checksumMD5ForWeights: String!
+  checksumSHA256ForAdded: String!
+  checksumSHA256ForWeights: String!
+  filesize: Int!
+}
+
+type Mutation {
+  createAIHubVoiceModel(input: CreateAIHubVoiceModelInput!): AIHubVoiceModel!
+  createVoiceModel(input: CreateVoiceModelInput!): VoiceModel!
+  createVoiceModelBackupUrl(input: CreateVoiceModelBackupUrlInput!): VoiceModelBackupUrl!
+  updateAIHubVoiceModel(input: UpdateAIHubVoiceModelInput!): AIHubVoiceModel!
+  updateVoiceModel(input: UpdateVoiceModelInput!): VoiceModel!
+  updateVoiceModelBackupUrl(input: UpdateVoiceModelBackupUrlInput!): VoiceModelBackupUrl!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Query {
+  AIHubVoiceModel(id: ID!): AIHubVoiceModel
+  AIHubVoiceModels(after: String, before: String, first: Int, last: Int): AIHubVoiceModelsConnection!
+  VoiceModel(id: ID!): VoiceModel
+  VoiceModelBackupUrl(id: ID!): VoiceModelBackupUrl
+  VoiceModelBackupUrls(after: String, before: String, first: Int, last: Int): VoiceModelBackupUrlsConnection!
+  VoiceModels(after: String, before: String, first: Int, last: Int): VoiceModelsConnection!
+}
+
+input UpdateAIHubVoiceModelInput {
+  creatorText: String
+  derivedModelId: ID
+  downloadCount: Int
+  filename: String
+  id: ID!
+  name: String
+  version: String
+}
+
+input UpdateVoiceModelBackupUrlInput {
+  id: ID!
+  url: String
+  voiceModelId: ID
+}
+
+input UpdateVoiceModelInput {
+  checksumMD5ForAdded: String
+  checksumMD5ForWeights: String
+  checksumSHA256ForAdded: String
+  checksumSHA256ForWeights: String
+  filesize: Int
+  id: ID!
+}
+
+type VoiceModel {
+  checksumMD5ForAdded: String!
+  checksumMD5ForWeights: String!
+  checksumSHA256ForAdded: String!
+  checksumSHA256ForWeights: String!
+  filesize: Int!
+  id: ID!
+  sourceModel: AIHubVoiceModel
+}
+
+type VoiceModelBackupUrl {
+  id: ID!
+  url: String!
+  voiceModel: AIHubVoiceModel!
+  voiceModelId: ID!
+}
+
+type VoiceModelBackupUrlsConnection {
+  edges: [VoiceModelBackupUrlsEdge]!
+  pageInfo: PageInfo!
+}
+
+type VoiceModelBackupUrlsEdge {
+  cursor: String!
+  node: VoiceModelBackupUrl!
+}
+
+type VoiceModelsConnection {
+  edges: [VoiceModelsEdge]!
+  pageInfo: PageInfo!
+}
+
+type VoiceModelsEdge {
+  cursor: String!
+  node: VoiceModel!
+}
