@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("POSTGRES_CONNECTION_URL")
 }
 
 generator client {
@@ -20,9 +20,9 @@ generator kysely {
 }
 
 // model User {
-//   id String @id
-//   // characters Character[] @relation("3")
-//   // voices     Voice[]     @relation("4")
+//   id         String      @id
+//   characters Character[] @relation("3")
+//   voices     Voice[]     @relation("4")
 // }
 
 // model Character {
@@ -96,7 +96,7 @@ model VoiceModel {
 
   // character                Character?            @relation(fields: [characterId], references: [id], name: "2")
   sourceModel    AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
-  textToSpeeches TextToSpeech[]   @relation("4")
+  textToSpeeches TextToSpeech[]   @relation("VoiceModelTextToSpeeches")
 }
 
 // or "ModelParams"
@@ -113,10 +113,9 @@ model AIHubVoiceModel {
   filename       String
   creatorText    String?
   version        String // RVC v2 | RVC v1
-  // TODO: make derivedModelId required
   derivedModelId String?               @unique @db.Uuid
   derivedModel   VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
-  backupUrls     VoiceModelBackupUrl[] @relation("1")
+  backupUrls     VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
 }
 
 // VoiceModelAIHubBackupUrlsConnection
@@ -125,7 +124,7 @@ model VoiceModelBackupUrl {
   id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url          String          @unique
   voiceModelId String          @db.Uuid
-  voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "1")
+  voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelBackupUrls")
 }
 
 // Or just "Speech"
@@ -134,5 +133,5 @@ model TextToSpeech {
   inputText    String
   ouputUrl     String
   voiceModelId String     @db.Uuid
-  voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "4")
+  voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "VoiceModelTextToSpeeches")
 }
