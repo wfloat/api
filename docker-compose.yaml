@@ -1,0 +1,53 @@
+# https://github.com/BretFisher/node-docker-good-defaults/blob/main/docker-compose.yml
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_CONNECTION_URL=$POSTGRES_CONNECTION_URL}
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/opt/node_app/api
+      - ./package.json:/opt/node_app/package.json
+      - ./package-lock.json:/opt/node_app/package-lock.json
+      - notused:/opt/node_app/api/node_modules
+    depends_on:
+      - postgres
+      - pgadmin
+
+  postgres:
+    container_name: postgres
+    image: postgres:16.1
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+
+  pgadmin:
+    build:
+      context: .
+      dockerfile: Dockerfile.pgadmin
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=5432
+      - POSTGRES_SERVICE_NAME=${POSTGRES_SERVICE_NAME}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - '5050:80'
+    restart: always
+    depends_on:
+      - postgres
+
+volumes:
+  notused:
+  postgres-data:

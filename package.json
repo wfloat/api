@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --watch",
     "start": "tsc && node dist/index.js",
-    "generate": "npx prisma generate --no-engine --watch",
+    "generate": "npx prisma generate --no-engine",
+    "generate:watch": "npx prisma generate --no-engine --watch",
     "codegen-python": "sgqlc-codegen schema --docstrings src/codegen/generated/schema.json src/codegen/generated/schema.py",
     "codegen-node": "graphql-codegen --config src/codegen/codegen.ts",
     "codegen": "npm run codegen-node && npm run codegen-python"
