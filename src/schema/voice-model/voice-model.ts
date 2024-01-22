@@ -11,12 +11,28 @@ builder.prismaObject("VoiceModel", {
     checksumMD5ForWeights: t.exposeString("checksumMD5ForWeights"),
     checksumSHA256ForAdded: t.exposeString("checksumSHA256ForAdded"),
     checksumSHA256ForWeights: t.exposeString("checksumSHA256ForWeights"),
+
     // Relations
+    modelConfig: t.relation("modelConfig", {
+      nullable: true,
+      resolve: async (query, root, args, context, info) =>
+        await context.loaders.modelConfigFromVoiceModel.load(root.id),
+    }),
     sourceModel: t.relation("sourceModel", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
         await context.loaders.sourceModelFromVoiceModel.load(root.id),
     }),
+
     // Connections
+    textToSpeeches: t.relatedConnection(
+      "textToSpeeches",
+      {
+        cursor: "id",
+        resolve: (query, parent, args, context, info) => undefined,
+      },
+      { name: "VoiceModelTextToSpeechesConnection" },
+      { name: "VoiceModelTextToSpeechesEdge" }
+    ),
   }),
 });
