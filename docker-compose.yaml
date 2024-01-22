@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - POSTGRES_CONNECTION_URL=$POSTGRES_CONNECTION_URL}
+      - POSTGRES_CONNECTION_URL=${POSTGRES_CONNECTION_URL}
     ports:
       - "4000:4000"
     volumes:
