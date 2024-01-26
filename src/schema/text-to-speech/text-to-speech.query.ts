@@ -3,20 +3,21 @@ import { builder } from "../../builder.js";
 builder.queryFields((t) => ({
   TextToSpeech: t.prismaField({
     type: "TextToSpeech",
-    nullable: true,
     args: {
       id: t.arg.id({ required: true }),
     },
-    resolve: async (query, root, args, context, info) =>
-      await context.loaders.textToSpeech.load(args.id),
+    resolve: async (query, root, args, context, info) => {
+      const result = await context.loaders.textToSpeech.load(args.id);
+      return result as NonNullable<typeof result>;
+    },
   }),
-  TextToSpeechs: t.prismaConnection(
+  TextToSpeeches: t.prismaConnection(
     {
       type: "TextToSpeech",
       cursor: "id",
       resolve: (query, parent, args, context, info) => undefined,
     },
-    { name: "TextToSpeechsConnection" },
-    { name: "TextToSpeechsEdge" }
+    { name: "TextToSpeechesConnection" },
+    { name: "TextToSpeechesEdge" }
   ),
 }));
