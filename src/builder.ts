@@ -3,14 +3,13 @@ import { PrismaClient } from "@prisma/client";
 import PrismaPlugin from "@pothos/plugin-prisma";
 import RelayPlugin from "@pothos/plugin-relay";
 import type PrismaTypes from "../prisma/generated/pothos.js";
+import { Context } from "./context.js";
 
 const prisma = new PrismaClient({});
 
 export const builder = new SchemaBuilder<{
   PrismaTypes: PrismaTypes;
-  Context: {
-    loaders: any; // TODO: Add to a context type
-  };
+  Context: Context;
   Scalars: {
     ID: {
       Output: string;
