@@ -2,8 +2,8 @@ import { builder } from "../../builder.js";
 import "./ai-hub-voice-model.query.js";
 import "./ai-hub-voice-model.mutation.js";
 import { db } from "../../database.js";
-import { DEFAULT_LIMIT as PAGE_LIMIT } from "../../loaders.js";
-import { parsePrismaCursor } from "@pothos/plugin-prisma";
+import { PAGE_LIMIT } from "../../loaders.js";
+import { VoiceModelBackupUrl } from "@prisma/client";
 
 builder.prismaObject("AIHubVoiceModel", {
   fields: (t) => ({
@@ -24,32 +24,11 @@ builder.prismaObject("AIHubVoiceModel", {
     }),
 
     // Connections
-    backupUrls: t.relatedConnection(
-      "backupUrls",
+    backupUrls: t.prismaConnection(
       {
+        type: "VoiceModelBackupUrl",
         cursor: "id",
-        resolve: async (query, parent, args, context, info) => {
-          let requestedLimit = args.first ?? args.last ?? 0;
-          let limit = Math.min(requestedLimit, PAGE_LIMIT);
-          // limit = limit + 1; // Retrieve an extra record used for pageInfo hasNextPage/hasPreviousPage
-
-          let cursor = query.cursor?.id;
-
-          let result = await db
-            .selectFrom("VoiceModelBackupUrl")
-            .select(["id", "url", "voiceModelId"])
-            .$if(args.first ? true : false, (qb) => qb.orderBy(["url asc", "id asc"]))
-            .$if(args.last ? true : false, (qb) => qb.orderBy(["url desc", "id desc"]))
-            .where("voiceModelId", "=", parent.id)
-            .$if(args.after && cursor ? true : false, (qb) => qb.where("id", ">", cursor!))
-            .$if(args.before && cursor ? true : false, (qb) => qb.where("id", "<", cursor!))
-            .limit(limit)
-            .execute();
-
-          let ids = result.map((row) => row.id);
-
-          return await context.loaders.voiceModelBackupUrl.loadMany(ids);
-        },
+        resolve: async (query, parent, args, context, info) => undefined,
       },
       { name: "AIHubVoiceModelBackupUrlsConnection" },
       { name: "AIHubVoiceModelBackupUrlsEdge" }

@@ -20,3 +20,7 @@ pip install sgqlc
 ```bash
 npm run codegen
 ```
+
+### TODO
+
+- Add global totalCount field to connections: https://pothos-graphql.dev/docs/plugins/prisma#total-count-on-shared-connection-objects
