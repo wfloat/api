@@ -27,7 +27,9 @@ builder.mutationField("createVoiceModelConfig", (t) =>
         .values(args.input)
         .returning(["id"])
         .executeTakeFirstOrThrow();
-      return context.loaders.voiceModelConfig.load(result.id);
+
+      const row = await context.loaders.voiceModelConfig.load(result.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );
@@ -69,7 +71,9 @@ builder.mutationField("updateVoiceModelConfig", (t) =>
         .set(input)
         .where("id", "=", args.input.id)
         .executeTakeFirstOrThrow();
-      return context.loaders.voiceModelConfig.load(args.input.id);
+
+      const row = await context.loaders.voiceModelConfig.load(args.input.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );

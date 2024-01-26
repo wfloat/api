@@ -28,7 +28,9 @@ builder.mutationField("createTextToSpeech", (t) =>
         .values(args.input)
         .returning(["id"])
         .executeTakeFirstOrThrow();
-      return context.loaders.textToSpeech.load(result.id);
+
+      const row = await context.loaders.textToSpeech.load(result.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );
@@ -73,7 +75,9 @@ builder.mutationField("updateTextToSpeech", (t) =>
         .set(input)
         .where("id", "=", args.input.id)
         .executeTakeFirstOrThrow();
-      return context.loaders.textToSpeech.load(args.input.id);
+
+      const row = await context.loaders.textToSpeech.load(args.input.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );

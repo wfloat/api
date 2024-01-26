@@ -25,11 +25,11 @@ builder.prismaObject("VoiceModel", {
     }),
 
     // Connections
-    textToSpeeches: t.relatedConnection(
-      "textToSpeeches",
+    textToSpeeches: t.prismaConnection(
       {
+        type: "TextToSpeech",
         cursor: "id",
-        resolve: (query, parent, args, context, info) => undefined,
+        resolve: async (query, parent, args, context, info) => undefined,
       },
       { name: "VoiceModelTextToSpeechesConnection" },
       { name: "VoiceModelTextToSpeechesEdge" }

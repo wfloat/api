@@ -28,7 +28,9 @@ builder.mutationField("createVoiceModelBackupUrl", (t) =>
         .values(args.input)
         .returning(["id"])
         .executeTakeFirstOrThrow();
-      return context.loaders.voiceModelBackupUrl.load(result.id);
+
+      const row = await context.loaders.voiceModelBackupUrl.load(result.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );
@@ -72,7 +74,9 @@ builder.mutationField("updateVoiceModelBackupUrl", (t) =>
         .set(input)
         .where("id", "=", args.input.id)
         .executeTakeFirstOrThrow();
-      return context.loaders.voiceModelBackupUrl.load(args.input.id);
+
+      const row = await context.loaders.voiceModelBackupUrl.load(args.input.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );

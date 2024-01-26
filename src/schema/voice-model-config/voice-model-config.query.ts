@@ -3,12 +3,13 @@ import { builder } from "../../builder.js";
 builder.queryFields((t) => ({
   VoiceModelConfig: t.prismaField({
     type: "VoiceModelConfig",
-    nullable: true,
     args: {
       id: t.arg.id({ required: true }),
     },
-    resolve: async (query, root, args, context, info) =>
-      await context.loaders.voiceModelConfig.load(args.id),
+    resolve: async (query, root, args, context, info) => {
+      const result = await context.loaders.voiceModelConfig.load(args.id);
+      return result as NonNullable<typeof result>;
+    },
   }),
   VoiceModelConfigs: t.prismaConnection(
     {

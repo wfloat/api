@@ -32,7 +32,9 @@ builder.mutationField("createAIHubVoiceModel", (t) =>
         .values(args.input)
         .returning(["id"])
         .executeTakeFirstOrThrow();
-      return context.loaders.aiHubVoiceModel.load(result.id);
+
+      const row = await context.loaders.aiHubVoiceModel.load(result.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );
@@ -84,7 +86,9 @@ builder.mutationField("updateAIHubVoiceModel", (t) =>
         .set(input)
         .where("id", "=", args.input.id)
         .executeTakeFirstOrThrow();
-      return context.loaders.aiHubVoiceModel.load(args.input.id);
+
+      const row = await context.loaders.aiHubVoiceModel.load(args.input.id);
+      return row as NonNullable<typeof row>;
     },
   })
 );
