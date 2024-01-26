@@ -10,7 +10,6 @@ import {
 
 export const PAGE_LIMIT = 50;
 
-// TODO: Add to a context type
 export function createLoaders() {
   return {
     // TODO: Make these use the same query functions instead of having their own
