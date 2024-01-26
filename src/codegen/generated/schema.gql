@@ -39,8 +39,18 @@ input CreateAIHubVoiceModelInput {
   version: String!
 }
 
+input CreateTextToSpeechInput {
+  inputText: String!
+  ouputUrl: String!
+  voiceModelId: ID!
+}
+
 input CreateVoiceModelBackupUrlInput {
   url: String!
+  voiceModelId: ID!
+}
+
+input CreateVoiceModelConfigInput {
   voiceModelId: ID!
 }
 
@@ -54,11 +64,15 @@ input CreateVoiceModelInput {
 
 type Mutation {
   createAIHubVoiceModel(input: CreateAIHubVoiceModelInput!): AIHubVoiceModel!
+  createTextToSpeech(input: CreateTextToSpeechInput!): TextToSpeech!
   createVoiceModel(input: CreateVoiceModelInput!): VoiceModel!
   createVoiceModelBackupUrl(input: CreateVoiceModelBackupUrlInput!): VoiceModelBackupUrl!
+  createVoiceModelConfig(input: CreateVoiceModelConfigInput!): VoiceModelConfig!
   updateAIHubVoiceModel(input: UpdateAIHubVoiceModelInput!): AIHubVoiceModel!
+  updateTextToSpeech(input: UpdateTextToSpeechInput!): TextToSpeech!
   updateVoiceModel(input: UpdateVoiceModelInput!): VoiceModel!
   updateVoiceModelBackupUrl(input: UpdateVoiceModelBackupUrlInput!): VoiceModelBackupUrl!
+  updateVoiceModelConfig(input: UpdateVoiceModelConfigInput!): VoiceModelConfig!
 }
 
 type PageInfo {
@@ -69,12 +83,34 @@ type PageInfo {
 }
 
 type Query {
-  AIHubVoiceModel(id: ID!): AIHubVoiceModel
+  AIHubVoiceModel(id: ID!): AIHubVoiceModel!
   AIHubVoiceModels(after: String, before: String, first: Int, last: Int): AIHubVoiceModelsConnection!
-  VoiceModel(id: ID!): VoiceModel
-  VoiceModelBackupUrl(id: ID!): VoiceModelBackupUrl
+  TextToSpeech(id: ID!): TextToSpeech!
+  TextToSpeeches(after: String, before: String, first: Int, last: Int): TextToSpeechesConnection!
+  VoiceModel(id: ID!): VoiceModel!
+  VoiceModelBackupUrl(id: ID!): VoiceModelBackupUrl!
   VoiceModelBackupUrls(after: String, before: String, first: Int, last: Int): VoiceModelBackupUrlsConnection!
+  VoiceModelConfig(id: ID!): VoiceModelConfig!
+  VoiceModelConfigs(after: String, before: String, first: Int, last: Int): VoiceModelConfigsConnection!
   VoiceModels(after: String, before: String, first: Int, last: Int): VoiceModelsConnection!
+}
+
+type TextToSpeech {
+  id: ID!
+  inputText: String!
+  ouputUrl: String!
+  voiceModel: VoiceModel!
+  voiceModelId: ID!
+}
+
+type TextToSpeechesConnection {
+  edges: [TextToSpeechesEdge]!
+  pageInfo: PageInfo!
+}
+
+type TextToSpeechesEdge {
+  cursor: String!
+  node: TextToSpeech!
 }
 
 input UpdateAIHubVoiceModelInput {
@@ -87,9 +123,21 @@ input UpdateAIHubVoiceModelInput {
   version: String
 }
 
+input UpdateTextToSpeechInput {
+  id: ID!
+  inputText: String
+  ouputUrl: String
+  voiceModelId: ID
+}
+
 input UpdateVoiceModelBackupUrlInput {
   id: ID!
   url: String
+  voiceModelId: ID
+}
+
+input UpdateVoiceModelConfigInput {
+  id: ID!
   voiceModelId: ID
 }
 
@@ -109,7 +157,9 @@ type VoiceModel {
   checksumSHA256ForWeights: String!
   filesize: Int!
   id: ID!
+  modelConfig: VoiceModelConfig
   sourceModel: AIHubVoiceModel
+  textToSpeeches(after: String, before: String, first: Int, last: Int): VoiceModelTextToSpeechesConnection!
 }
 
 type VoiceModelBackupUrl {
@@ -127,6 +177,32 @@ type VoiceModelBackupUrlsConnection {
 type VoiceModelBackupUrlsEdge {
   cursor: String!
   node: VoiceModelBackupUrl!
+}
+
+type VoiceModelConfig {
+  id: ID!
+  voiceModel: VoiceModel!
+  voiceModelId: ID!
+}
+
+type VoiceModelConfigsConnection {
+  edges: [VoiceModelConfigsEdge]!
+  pageInfo: PageInfo!
+}
+
+type VoiceModelConfigsEdge {
+  cursor: String!
+  node: VoiceModelConfig!
+}
+
+type VoiceModelTextToSpeechesConnection {
+  edges: [VoiceModelTextToSpeechesEdge]!
+  pageInfo: PageInfo!
+}
+
+type VoiceModelTextToSpeechesEdge {
+  cursor: String!
+  node: TextToSpeech!
 }
 
 type VoiceModelsConnection {
