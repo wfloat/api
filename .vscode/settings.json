@@ -2,19 +2,8 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
-    "editor.formatOnSave": true,
   },
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "wfloat-local",
-      "username": "postgres",
-      "database": "wfloat-local"
-    }
-  ],
+  "editor.formatOnSave": true
 }
