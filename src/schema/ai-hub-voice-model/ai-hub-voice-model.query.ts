@@ -18,6 +18,9 @@ builder.queryFields((t) => ({
     {
       type: "AIHubVoiceModel",
       cursor: "id",
+      args: {
+        minDownloadCount: t.arg.int(),
+      },
       resolve: async (query, parent, args, context, info) => {
         let requestedLimit = args.first ?? args.last ?? 0;
         let limit = Math.min(requestedLimit, PAGE_LIMIT);
@@ -37,6 +40,10 @@ builder.queryFields((t) => ({
 
           .$if(args.first ? true : false, (qb) => qb.orderBy(["filename asc", "id asc"]))
           .$if(args.last ? true : false, (qb) => qb.orderBy(["filename desc", "id desc"]))
+
+          .$if(args.minDownloadCount ? true : false, (qb) =>
+            qb.where("downloadCount", ">=", args.minDownloadCount!)
+          )
 
           .$if(args.after && cursorRow ? true : false, (qb) =>
             qb.where((eb) =>
