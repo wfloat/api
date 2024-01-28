@@ -6,11 +6,14 @@ builder.prismaObject("VoiceModel", {
   fields: (t) => ({
     // Fields
     id: t.exposeID("id"),
+    name: t.exposeString("name"),
     filesize: t.exposeInt("filesize"),
     checksumMD5ForAdded: t.exposeString("checksumMD5ForAdded"),
     checksumMD5ForWeights: t.exposeString("checksumMD5ForWeights"),
     checksumSHA256ForAdded: t.exposeString("checksumSHA256ForAdded"),
     checksumSHA256ForWeights: t.exposeString("checksumSHA256ForWeights"),
+    hidden: t.exposeBoolean("hidden"),
+    processed: t.exposeBoolean("processed"),
 
     // Relations
     modelConfig: t.relation("modelConfig", {

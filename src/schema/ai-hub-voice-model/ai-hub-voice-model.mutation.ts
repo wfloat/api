@@ -15,6 +15,7 @@ CreateAIHubVoiceModelInput.implement({
     creatorText: t.string(),
     version: t.string({ required: true }),
     derivedModelId: t.id(),
+    checksumMD5ForWeights: t.string({ required: true }),
   }),
 });
 type CreateAIHubVoiceModelInputShape = typeof CreateAIHubVoiceModelInput.$inferInput;
@@ -53,6 +54,7 @@ UpdateAIHubVoiceModelInput.implement({
     creatorText: t.string(),
     version: t.string(),
     derivedModelId: t.id(),
+    checksumMD5ForWeights: t.string(),
   }),
 });
 type UpdateAIHubVoiceModelInputShape = typeof UpdateAIHubVoiceModelInput.$inferInput;
@@ -65,6 +67,7 @@ const AIHubVoiceModelNullability: { [K in keyof AIHubVoiceModel]: boolean } = {
   creatorText: true,
   version: false,
   derivedModelId: true,
+  checksumMD5ForWeights: false,
 };
 
 builder.mutationField("updateAIHubVoiceModel", (t) =>

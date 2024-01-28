@@ -8,6 +8,7 @@ export type AIHubVoiceModel = {
     id: Generated<string>;
     downloadCount: number;
     name: string | null;
+    checksumMD5ForWeights: string;
     filename: string;
     creatorText: string | null;
     version: string;
@@ -22,6 +23,9 @@ export type TextToSpeech = {
 export type VoiceModel = {
     id: Generated<string>;
     filesize: number;
+    hidden: boolean;
+    processed: boolean;
+    name: string;
     checksumMD5ForAdded: string;
     checksumMD5ForWeights: string;
     checksumSHA256ForAdded: string;

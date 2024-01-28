@@ -8,7 +8,7 @@ import {
   VoiceModelConfig,
 } from "@prisma/client";
 
-export const PAGE_LIMIT = 50;
+export const PAGE_LIMIT = 100;
 
 export function createLoaders() {
   return {

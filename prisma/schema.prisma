@@ -87,6 +87,9 @@ model VoiceModel {
   id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   // type                     String // RVC v1 | RVC v2
   filesize                 Int // Bytes
+  hidden                   Boolean
+  processed                Boolean
+  name                     String
   checksumMD5ForAdded      String            @unique
   checksumMD5ForWeights    String            @unique
   checksumSHA256ForAdded   String            @unique
@@ -107,15 +110,16 @@ model VoiceModelConfig {
 }
 
 model AIHubVoiceModel {
-  id             String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  downloadCount  Int
-  name           String?
-  filename       String
-  creatorText    String?
-  version        String // RVC v2 | RVC v1
-  derivedModelId String?               @unique @db.Uuid
-  derivedModel   VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
-  backupUrls     VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
+  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  downloadCount         Int
+  name                  String?
+  checksumMD5ForWeights String                @unique
+  filename              String
+  creatorText           String?
+  version               String // RVC v2 | RVC v1
+  derivedModelId        String?               @unique @db.Uuid
+  derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
+  backupUrls            VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
 }
 
 // VoiceModelAIHubBackupUrlsConnection

@@ -31,6 +31,7 @@ type AIHubVoiceModelsEdge {
 }
 
 input CreateAIHubVoiceModelInput {
+  checksumMD5ForWeights: String!
   creatorText: String
   derivedModelId: ID
   downloadCount: Int!
@@ -60,6 +61,9 @@ input CreateVoiceModelInput {
   checksumSHA256ForAdded: String!
   checksumSHA256ForWeights: String!
   filesize: Int!
+  hidden: Boolean!
+  name: String!
+  processed: Boolean!
 }
 
 type Mutation {
@@ -84,7 +88,7 @@ type PageInfo {
 
 type Query {
   AIHubVoiceModel(id: ID!): AIHubVoiceModel!
-  AIHubVoiceModels(after: String, before: String, first: Int, last: Int): AIHubVoiceModelsConnection!
+  AIHubVoiceModels(after: String, before: String, first: Int, last: Int, minDownloadCount: Int): AIHubVoiceModelsConnection!
   TextToSpeech(id: ID!): TextToSpeech!
   TextToSpeeches(after: String, before: String, first: Int, last: Int): TextToSpeechesConnection!
   VoiceModel(id: ID!): VoiceModel!
@@ -114,6 +118,7 @@ type TextToSpeechesEdge {
 }
 
 input UpdateAIHubVoiceModelInput {
+  checksumMD5ForWeights: String
   creatorText: String
   derivedModelId: ID
   downloadCount: Int
@@ -147,7 +152,10 @@ input UpdateVoiceModelInput {
   checksumSHA256ForAdded: String
   checksumSHA256ForWeights: String
   filesize: Int
+  hidden: Boolean
   id: ID!
+  name: String
+  processed: Boolean
 }
 
 type VoiceModel {
@@ -156,8 +164,11 @@ type VoiceModel {
   checksumSHA256ForAdded: String!
   checksumSHA256ForWeights: String!
   filesize: Int!
+  hidden: Boolean!
   id: ID!
   modelConfig: VoiceModelConfig
+  name: String!
+  processed: Boolean!
   sourceModel: AIHubVoiceModel
   textToSpeeches(after: String, before: String, first: Int, last: Int): VoiceModelTextToSpeechesConnection!
 }

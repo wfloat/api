@@ -32,7 +32,9 @@ String = sgqlc.types.String
 ########################################################################
 class CreateAIHubVoiceModelInput(sgqlc.types.Input):
     __schema__ = schema
-    __field_names__ = ('creator_text', 'derived_model_id', 'download_count', 'filename', 'name', 'version')
+    __field_names__ = ('checksum_md5_for_weights', 'creator_text', 'derived_model_id', 'download_count', 'filename', 'name', 'version')
+    checksum_md5_for_weights = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='checksumMD5ForWeights')
+
     creator_text = sgqlc.types.Field(String, graphql_name='creatorText')
 
     derived_model_id = sgqlc.types.Field(ID, graphql_name='derivedModelId')
@@ -76,7 +78,7 @@ class CreateVoiceModelConfigInput(sgqlc.types.Input):
 
 class CreateVoiceModelInput(sgqlc.types.Input):
     __schema__ = schema
-    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize')
+    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize', 'hidden', 'name', 'processed')
     checksum_md5_for_added = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='checksumMD5ForAdded')
 
     checksum_md5_for_weights = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='checksumMD5ForWeights')
@@ -87,11 +89,19 @@ class CreateVoiceModelInput(sgqlc.types.Input):
 
     filesize = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name='filesize')
 
+    hidden = sgqlc.types.Field(sgqlc.types.non_null(Boolean), graphql_name='hidden')
+
+    name = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='name')
+
+    processed = sgqlc.types.Field(sgqlc.types.non_null(Boolean), graphql_name='processed')
+
 
 
 class UpdateAIHubVoiceModelInput(sgqlc.types.Input):
     __schema__ = schema
-    __field_names__ = ('creator_text', 'derived_model_id', 'download_count', 'filename', 'id', 'name', 'version')
+    __field_names__ = ('checksum_md5_for_weights', 'creator_text', 'derived_model_id', 'download_count', 'filename', 'id', 'name', 'version')
+    checksum_md5_for_weights = sgqlc.types.Field(String, graphql_name='checksumMD5ForWeights')
+
     creator_text = sgqlc.types.Field(String, graphql_name='creatorText')
 
     derived_model_id = sgqlc.types.Field(ID, graphql_name='derivedModelId')
@@ -143,7 +153,7 @@ class UpdateVoiceModelConfigInput(sgqlc.types.Input):
 
 class UpdateVoiceModelInput(sgqlc.types.Input):
     __schema__ = schema
-    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize', 'id')
+    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize', 'hidden', 'id', 'name', 'processed')
     checksum_md5_for_added = sgqlc.types.Field(String, graphql_name='checksumMD5ForAdded')
 
     checksum_md5_for_weights = sgqlc.types.Field(String, graphql_name='checksumMD5ForWeights')
@@ -154,7 +164,13 @@ class UpdateVoiceModelInput(sgqlc.types.Input):
 
     filesize = sgqlc.types.Field(Int, graphql_name='filesize')
 
+    hidden = sgqlc.types.Field(Boolean, graphql_name='hidden')
+
     id = sgqlc.types.Field(sgqlc.types.non_null(ID), graphql_name='id')
+
+    name = sgqlc.types.Field(String, graphql_name='name')
+
+    processed = sgqlc.types.Field(Boolean, graphql_name='processed')
 
 
 
@@ -359,6 +375,7 @@ class Query(sgqlc.types.Type):
         ('before', sgqlc.types.Arg(String, graphql_name='before', default=None)),
         ('first', sgqlc.types.Arg(Int, graphql_name='first', default=None)),
         ('last', sgqlc.types.Arg(Int, graphql_name='last', default=None)),
+        ('min_download_count', sgqlc.types.Arg(Int, graphql_name='minDownloadCount', default=None)),
 ))
     )
     '''Arguments:
@@ -367,6 +384,7 @@ class Query(sgqlc.types.Type):
     * `before` (`String`)None
     * `first` (`Int`)None
     * `last` (`Int`)None
+    * `min_download_count` (`Int`)None
     '''
 
     text_to_speech = sgqlc.types.Field(sgqlc.types.non_null('TextToSpeech'), graphql_name='TextToSpeech', args=sgqlc.types.ArgDict((
@@ -502,7 +520,7 @@ class TextToSpeechesEdge(sgqlc.types.Type):
 
 class VoiceModel(sgqlc.types.Type):
     __schema__ = schema
-    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize', 'id', 'model_config', 'source_model', 'text_to_speeches')
+    __field_names__ = ('checksum_md5_for_added', 'checksum_md5_for_weights', 'checksum_sha256_for_added', 'checksum_sha256_for_weights', 'filesize', 'hidden', 'id', 'model_config', 'name', 'processed', 'source_model', 'text_to_speeches')
     checksum_md5_for_added = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='checksumMD5ForAdded')
 
     checksum_md5_for_weights = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='checksumMD5ForWeights')
@@ -513,9 +531,15 @@ class VoiceModel(sgqlc.types.Type):
 
     filesize = sgqlc.types.Field(sgqlc.types.non_null(Int), graphql_name='filesize')
 
+    hidden = sgqlc.types.Field(sgqlc.types.non_null(Boolean), graphql_name='hidden')
+
     id = sgqlc.types.Field(sgqlc.types.non_null(ID), graphql_name='id')
 
     model_config = sgqlc.types.Field('VoiceModelConfig', graphql_name='modelConfig')
+
+    name = sgqlc.types.Field(sgqlc.types.non_null(String), graphql_name='name')
+
+    processed = sgqlc.types.Field(sgqlc.types.non_null(Boolean), graphql_name='processed')
 
     source_model = sgqlc.types.Field(AIHubVoiceModel, graphql_name='sourceModel')
 
