@@ -15,7 +15,7 @@ builder.prismaObject("AIHubVoiceModel", {
     creatorText: t.exposeString("creatorText", { nullable: true }),
     version: t.exposeString("version"),
     derivedModelId: t.exposeID("derivedModelId", { nullable: true }),
-
+    checksumMD5ForWeights: t.exposeString("checksumMD5ForWeights"),
     // Relations
     derivedModel: t.relation("derivedModel", {
       nullable: true,
