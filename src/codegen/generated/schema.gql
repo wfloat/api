@@ -1,5 +1,6 @@
 type AIHubVoiceModel {
   backupUrls(after: String, before: String, first: Int, last: Int): AIHubVoiceModelBackupUrlsConnection!
+  checksumMD5ForWeights: String!
   creatorText: String
   derivedModel: VoiceModel
   derivedModelId: ID
