@@ -6,6 +6,7 @@ import {
   VoiceModel,
   VoiceModelBackupUrl,
   VoiceModelConfig,
+  VoiceModelProfile,
 } from "@prisma/client";
 
 export const PAGE_LIMIT = 100;
@@ -98,6 +99,23 @@ export function createLoaders() {
           }
         })
     ),
+    voiceModelProfile: new DataLoader<string, VoiceModelProfile | null>(
+      (ids) =>
+        new Promise(async (resolve) => {
+          try {
+            const rows = await db
+              .selectFrom("VoiceModelProfile")
+              .selectAll()
+              .where("id", "in", ids)
+              .execute();
+
+            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
+          } catch (error) {
+            console.error("Error loading VoiceModelProfile:", error);
+            resolve(ids.map(() => null)); // Resolve with nulls in case of error
+          }
+        })
+    ),
 
     // 1 to 1 relation loaders
     modelConfigFromVoiceModel: new DataLoader<string, VoiceModelConfig | null>(
@@ -130,6 +148,23 @@ export function createLoaders() {
             resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
           } catch (error) {
             console.error("Error loading AIHubVoiceModel:", error);
+            resolve(ids.map(() => null)); // Resolve with nulls in case of error
+          }
+        })
+    ),
+    profileFromAIHubVoiceModel: new DataLoader<string, VoiceModelProfile | null>(
+      (ids) =>
+        new Promise(async (resolve) => {
+          try {
+            const rows = await db
+              .selectFrom("VoiceModelProfile")
+              .selectAll()
+              .where("voiceModelId", "in", ids)
+              .execute();
+
+            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
+          } catch (error) {
+            console.error("Error loading VoiceModelProfile:", error);
             resolve(ids.map(() => null)); // Resolve with nulls in case of error
           }
         })

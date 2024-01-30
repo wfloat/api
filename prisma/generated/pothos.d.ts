@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, VoiceModel, VoiceModelConfig, AIHubVoiceModel, VoiceModelBackupUrl, TextToSpeech } from "@prisma/client";
+import type { Prisma, VoiceModel, VoiceModelConfig, AIHubVoiceModel, VoiceModelProfile, VoiceModelBackupUrl, TextToSpeech } from "@prisma/client";
 export default interface PrismaTypes {
     VoiceModel: {
         Name: "VoiceModel";
@@ -57,7 +57,7 @@ export default interface PrismaTypes {
         Where: Prisma.AIHubVoiceModelWhereInput;
         Create: {};
         Update: {};
-        RelationName: "derivedModel" | "backupUrls";
+        RelationName: "derivedModel" | "backupUrls" | "profile";
         ListRelations: "backupUrls";
         Relations: {
             derivedModel: {
@@ -67,6 +67,29 @@ export default interface PrismaTypes {
             backupUrls: {
                 Shape: VoiceModelBackupUrl[];
                 Name: "VoiceModelBackupUrl";
+            };
+            profile: {
+                Shape: VoiceModelProfile | null;
+                Name: "VoiceModelProfile";
+            };
+        };
+    };
+    VoiceModelProfile: {
+        Name: "VoiceModelProfile";
+        Shape: VoiceModelProfile;
+        Include: Prisma.VoiceModelProfileInclude;
+        Select: Prisma.VoiceModelProfileSelect;
+        OrderBy: Prisma.VoiceModelProfileOrderByWithRelationInput;
+        WhereUnique: Prisma.VoiceModelProfileWhereUniqueInput;
+        Where: Prisma.VoiceModelProfileWhereInput;
+        Create: {};
+        Update: {};
+        RelationName: "voiceModel";
+        ListRelations: never;
+        Relations: {
+            voiceModel: {
+                Shape: AIHubVoiceModel;
+                Name: "AIHubVoiceModel";
             };
         };
     };

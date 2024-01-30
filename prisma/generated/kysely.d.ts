@@ -40,10 +40,23 @@ export type VoiceModelConfig = {
     id: Generated<string>;
     voiceModelId: string;
 };
+export type VoiceModelProfile = {
+    id: Generated<string>;
+    confidence: number;
+    fictional: boolean;
+    name: string;
+    gender: string;
+    relevantTags: string[];
+    accent: string;
+    nativeLanguage: string;
+    modelTrainedOnEnglishProbability: number;
+    voiceModelId: string;
+};
 export type DB = {
     AIHubVoiceModel: AIHubVoiceModel;
     TextToSpeech: TextToSpeech;
     VoiceModel: VoiceModel;
     VoiceModelBackupUrl: VoiceModelBackupUrl;
     VoiceModelConfig: VoiceModelConfig;
+    VoiceModelProfile: VoiceModelProfile;
 };

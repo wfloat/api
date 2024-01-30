@@ -120,6 +120,21 @@ model AIHubVoiceModel {
   derivedModelId        String?               @unique @db.Uuid
   derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
   backupUrls            VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
+  profile               VoiceModelProfile?    @relation("AIHubVoiceModelProfile")
+}
+
+model VoiceModelProfile {
+  id                               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  confidence                       Float
+  fictional                        Boolean
+  name                             String
+  gender                           String // male | female
+  relevantTags                     String[]
+  accent                           String
+  nativeLanguage                   String
+  modelTrainedOnEnglishProbability Float
+  voiceModelId                     String          @unique @db.Uuid
+  voiceModel                       AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelProfile")
 }
 
 // VoiceModelAIHubBackupUrlsConnection
