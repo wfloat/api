@@ -7,8 +7,8 @@ type AIHubVoiceModel {
   downloadCount: Int!
   filename: String!
   id: ID!
+  inferredProfile: VoiceModelProfile
   name: String
-  profile: VoiceModelProfile
   version: String!
 }
 

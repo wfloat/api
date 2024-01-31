@@ -23,7 +23,7 @@ builder.prismaObject("AIHubVoiceModel", {
       resolve: async (query, root, args, context, info) =>
         root.derivedModelId ? await context.loaders.voiceModel.load(root.derivedModelId) : null,
     }),
-    profile: t.relation("inferredProfile", {
+    inferredProfile: t.relation("inferredProfile", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
         await context.loaders.profileFromAIHubVoiceModel.load(root.id),
