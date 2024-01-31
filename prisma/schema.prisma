@@ -120,7 +120,7 @@ model AIHubVoiceModel {
   derivedModelId        String?               @unique @db.Uuid
   derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
   backupUrls            VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
-  profile               VoiceModelProfile?    @relation("AIHubVoiceModelProfile")
+  inferredProfile       VoiceModelProfile?    @relation("AIHubVoiceModelProfile")
 }
 
 model VoiceModelProfile {

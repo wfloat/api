@@ -181,7 +181,7 @@ export function createLoaders() {
               .where("voiceModelId", "in", ids)
               .execute();
 
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
+            resolve(ids.map((id) => rows.find((row) => row.voiceModelId === id) || null));
           } catch (error) {
             console.error("Error loading VoiceModelProfile:", error);
             resolve(ids.map(() => null)); // Resolve with nulls in case of error

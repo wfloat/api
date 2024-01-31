@@ -57,7 +57,7 @@ export default interface PrismaTypes {
         Where: Prisma.AIHubVoiceModelWhereInput;
         Create: {};
         Update: {};
-        RelationName: "derivedModel" | "backupUrls" | "profile";
+        RelationName: "derivedModel" | "backupUrls" | "inferredProfile";
         ListRelations: "backupUrls";
         Relations: {
             derivedModel: {
@@ -68,7 +68,7 @@ export default interface PrismaTypes {
                 Shape: VoiceModelBackupUrl[];
                 Name: "VoiceModelBackupUrl";
             };
-            profile: {
+            inferredProfile: {
                 Shape: VoiceModelProfile | null;
                 Name: "VoiceModelProfile";
             };

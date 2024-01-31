@@ -103,7 +103,7 @@ type PageInfo {
 }
 
 type Query {
-  AIHubVoiceModel(id: ID!): AIHubVoiceModel!
+  AIHubVoiceModel(checksumMD5ForWeights: String, id: ID): AIHubVoiceModel!
   AIHubVoiceModels(after: String, before: String, first: Int, last: Int, minDownloadCount: Int): AIHubVoiceModelsConnection!
   TextToSpeech(id: ID!): TextToSpeech!
   TextToSpeeches(after: String, before: String, first: Int, last: Int): TextToSpeechesConnection!

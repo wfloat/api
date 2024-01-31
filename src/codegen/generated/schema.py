@@ -432,12 +432,14 @@ class Query(sgqlc.types.Type):
     __schema__ = schema
     __field_names__ = ('aihub_voice_model', 'aihub_voice_models', 'text_to_speech', 'text_to_speeches', 'voice_model', 'voice_model_backup_url', 'voice_model_backup_urls', 'voice_model_config', 'voice_model_configs', 'voice_model_profile', 'voice_model_profiles', 'voice_models')
     aihub_voice_model = sgqlc.types.Field(sgqlc.types.non_null('AIHubVoiceModel'), graphql_name='AIHubVoiceModel', args=sgqlc.types.ArgDict((
-        ('id', sgqlc.types.Arg(sgqlc.types.non_null(ID), graphql_name='id', default=None)),
+        ('checksum_md5_for_weights', sgqlc.types.Arg(String, graphql_name='checksumMD5ForWeights', default=None)),
+        ('id', sgqlc.types.Arg(ID, graphql_name='id', default=None)),
 ))
     )
     '''Arguments:
 
-    * `id` (`ID!`)None
+    * `checksum_md5_for_weights` (`String`)None
+    * `id` (`ID`)None
     '''
 
     aihub_voice_models = sgqlc.types.Field(sgqlc.types.non_null(AIHubVoiceModelsConnection), graphql_name='AIHubVoiceModels', args=sgqlc.types.ArgDict((

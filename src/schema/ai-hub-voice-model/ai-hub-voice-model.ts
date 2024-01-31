@@ -16,13 +16,14 @@ builder.prismaObject("AIHubVoiceModel", {
     version: t.exposeString("version"),
     derivedModelId: t.exposeID("derivedModelId", { nullable: true }),
     checksumMD5ForWeights: t.exposeString("checksumMD5ForWeights"),
+
     // Relations
     derivedModel: t.relation("derivedModel", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
         root.derivedModelId ? await context.loaders.voiceModel.load(root.derivedModelId) : null,
     }),
-    profile: t.relation("profile", {
+    profile: t.relation("inferredProfile", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
         await context.loaders.profileFromAIHubVoiceModel.load(root.id),
