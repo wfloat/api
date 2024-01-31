@@ -7,10 +7,20 @@ builder.queryFields((t) => ({
   AIHubVoiceModel: t.prismaField({
     type: "AIHubVoiceModel",
     args: {
-      id: t.arg.id({ required: true }),
+      id: t.arg.id({ required: false }),
+      checksumMD5ForWeights: t.arg.string({ required: false }),
     },
     resolve: async (query, root, args, context, info) => {
-      const result = await context.loaders.aiHubVoiceModel.load(args.id);
+      let result: AIHubVoiceModel | null;
+      if (args.id) {
+        result = await context.loaders.aiHubVoiceModel.load(args.id);
+      } else if (args.checksumMD5ForWeights) {
+        result = await context.loaders.aiHubVoiceModelUsingChecksumMD5ForWeights.load(
+          args.checksumMD5ForWeights
+        );
+      } else {
+        throw new Error("Either args.id or args.checksumMD5ForWeights must be set.");
+      }
       return result as NonNullable<typeof result>;
     },
   }),

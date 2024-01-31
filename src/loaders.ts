@@ -31,6 +31,25 @@ export function createLoaders() {
           }
         })
     ),
+    aiHubVoiceModelUsingChecksumMD5ForWeights: new DataLoader<string, AIHubVoiceModel | null>(
+      (keys) =>
+        new Promise(async (resolve) => {
+          try {
+            const rows = await db
+              .selectFrom("AIHubVoiceModel")
+              .selectAll()
+              .where("checksumMD5ForWeights", "in", keys)
+              .execute();
+
+            resolve(
+              keys.map((key) => rows.find((row) => row.checksumMD5ForWeights === key) || null)
+            );
+          } catch (error) {
+            console.error("Error loading AIHubVoiceModel:", error);
+            resolve(keys.map(() => null)); // Resolve with nulls in case of error
+          }
+        })
+    ),
     voiceModelBackupUrl: new DataLoader<string, VoiceModelBackupUrl | null>(
       (ids) =>
         new Promise(async (resolve) => {
