@@ -104,9 +104,16 @@ model VoiceModel {
 
 // or "ModelParams"
 model VoiceModelConfig {
-  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  voiceModelId String     @unique @db.Uuid
-  voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id]) // ctx.loaders.voiceModel.load(voiceModelId)
+  id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transposePitch        Int
+  pitchExtractionMethod String
+  searchFeatureRatio    Float
+  filterRadius          Int
+  audioResampling       Int
+  volumeEnvelopeScaling Float
+  artifactProtection    Float
+  voiceModelId          String     @unique @db.Uuid
+  voiceModel            VoiceModel @relation(fields: [voiceModelId], references: [id]) // ctx.loaders.voiceModel.load(voiceModelId)
 }
 
 model AIHubVoiceModel {

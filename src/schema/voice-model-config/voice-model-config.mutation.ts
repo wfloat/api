@@ -9,6 +9,13 @@ const CreateVoiceModelConfigInput = builder.inputRef<CreateVoiceModelConfigInput
 );
 CreateVoiceModelConfigInput.implement({
   fields: (t) => ({
+    transposePitch: t.int({ required: true }),
+    pitchExtractionMethod: t.string({ required: true }),
+    searchFeatureRatio: t.float({ required: true }),
+    filterRadius: t.int({ required: true }),
+    audioResampling: t.int({ required: true }),
+    volumeEnvelopeScaling: t.float({ required: true }),
+    artifactProtection: t.float({ required: true }),
     voiceModelId: t.id({ required: true }),
   }),
 });
@@ -42,6 +49,13 @@ const UpdateVoiceModelConfigInput = builder.inputRef<UpdateVoiceModelConfigInput
 UpdateVoiceModelConfigInput.implement({
   fields: (t) => ({
     id: t.id({ required: true }),
+    transposePitch: t.int(),
+    pitchExtractionMethod: t.string(),
+    searchFeatureRatio: t.float(),
+    filterRadius: t.int(),
+    audioResampling: t.int(),
+    volumeEnvelopeScaling: t.float(),
+    artifactProtection: t.float(),
     voiceModelId: t.id(),
   }),
 });
@@ -49,6 +63,13 @@ type UpdateVoiceModelConfigInputShape = typeof UpdateVoiceModelConfigInput.$infe
 
 const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = {
   id: false,
+  transposePitch: false,
+  pitchExtractionMethod: false,
+  searchFeatureRatio: false,
+  filterRadius: false,
+  audioResampling: false,
+  volumeEnvelopeScaling: false,
+  artifactProtection: false,
   voiceModelId: false,
 };
 

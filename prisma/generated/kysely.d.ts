@@ -38,6 +38,13 @@ export type VoiceModelBackupUrl = {
 };
 export type VoiceModelConfig = {
     id: Generated<string>;
+    transposePitch: number;
+    pitchExtractionMethod: string;
+    searchFeatureRatio: number;
+    filterRadius: number;
+    audioResampling: number;
+    volumeEnvelopeScaling: number;
+    artifactProtection: number;
     voiceModelId: string;
 };
 export type VoiceModelProfile = {
