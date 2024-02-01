@@ -86,7 +86,8 @@ generator kysely {
 model VoiceModel {
   id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   // type                     String // RVC v1 | RVC v2
-  filesize                 Int // Bytes
+  filesizeForWeights       Int // Bytes
+  filesizeForAdded         Int // Bytes
   hidden                   Boolean
   processed                Boolean
   name                     String

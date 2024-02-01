@@ -69,7 +69,8 @@ input CreateVoiceModelInput {
   checksumMD5ForWeights: String!
   checksumSHA256ForAdded: String!
   checksumSHA256ForWeights: String!
-  filesize: Int!
+  filesizeForAdded: Int!
+  filesizeForWeights: Int!
   hidden: Boolean!
   name: String!
   processed: Boolean!
@@ -183,7 +184,8 @@ input UpdateVoiceModelInput {
   checksumMD5ForWeights: String
   checksumSHA256ForAdded: String
   checksumSHA256ForWeights: String
-  filesize: Int
+  filesizeForAdded: Int
+  filesizeForWeights: Int
   hidden: Boolean
   id: ID!
   name: String
@@ -208,7 +210,8 @@ type VoiceModel {
   checksumMD5ForWeights: String!
   checksumSHA256ForAdded: String!
   checksumSHA256ForWeights: String!
-  filesize: Int!
+  filesizeForAdded: Int!
+  filesizeForWeights: Int!
   hidden: Boolean!
   id: ID!
   modelConfig: VoiceModelConfig

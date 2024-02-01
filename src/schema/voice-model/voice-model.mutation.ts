@@ -7,7 +7,8 @@ type CreateVoiceModelInputType = Omit<VoiceModel, "id">;
 const CreateVoiceModelInput = builder.inputRef<CreateVoiceModelInputType>("CreateVoiceModelInput");
 CreateVoiceModelInput.implement({
   fields: (t) => ({
-    filesize: t.int({ required: true }),
+    filesizeForWeights: t.int({ required: true }),
+    filesizeForAdded: t.int({ required: true }),
     checksumMD5ForAdded: t.string({ required: true }),
     checksumMD5ForWeights: t.string({ required: true }),
     checksumSHA256ForAdded: t.string({ required: true }),
@@ -44,7 +45,8 @@ const UpdateVoiceModelInput = builder.inputRef<UpdateVoiceModelInputType>("Updat
 UpdateVoiceModelInput.implement({
   fields: (t) => ({
     id: t.id({ required: true }),
-    filesize: t.int(),
+    filesizeForWeights: t.int(),
+    filesizeForAdded: t.int(),
     checksumMD5ForAdded: t.string(),
     checksumMD5ForWeights: t.string(),
     checksumSHA256ForAdded: t.string(),
@@ -58,7 +60,8 @@ type UpdateVoiceModelInputShape = typeof UpdateVoiceModelInput.$inferInput;
 
 const VoiceModelNullability: { [K in keyof VoiceModel]: boolean } = {
   id: false,
-  filesize: false,
+  filesizeForWeights: false,
+  filesizeForAdded: false,
   checksumMD5ForAdded: false,
   checksumMD5ForWeights: false,
   checksumSHA256ForAdded: false,

@@ -22,7 +22,8 @@ export type TextToSpeech = {
 };
 export type VoiceModel = {
     id: Generated<string>;
-    filesize: number;
+    filesizeForWeights: number;
+    filesizeForAdded: number;
     hidden: boolean;
     processed: boolean;
     name: string;
