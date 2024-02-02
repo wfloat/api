@@ -9,6 +9,8 @@ const CreateVoiceModelConfigInput = builder.inputRef<CreateVoiceModelConfigInput
 );
 CreateVoiceModelConfigInput.implement({
   fields: (t) => ({
+    qualityScore: t.float({ required: true }),
+    f0Curve: t.string({ required: true }),
     transposePitch: t.int({ required: true }),
     pitchExtractionMethod: t.string({ required: true }),
     searchFeatureRatio: t.float({ required: true }),
@@ -49,6 +51,8 @@ const UpdateVoiceModelConfigInput = builder.inputRef<UpdateVoiceModelConfigInput
 UpdateVoiceModelConfigInput.implement({
   fields: (t) => ({
     id: t.id({ required: true }),
+    qualityScore: t.float(),
+    f0Curve: t.string(),
     transposePitch: t.int(),
     pitchExtractionMethod: t.string(),
     searchFeatureRatio: t.float(),
@@ -63,6 +67,8 @@ type UpdateVoiceModelConfigInputShape = typeof UpdateVoiceModelConfigInput.$infe
 
 const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = {
   id: false,
+  qualityScore: false,
+  f0Curve: false,
   transposePitch: false,
   pitchExtractionMethod: false,
   searchFeatureRatio: false,

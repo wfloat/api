@@ -39,6 +39,8 @@ export type VoiceModelBackupUrl = {
 };
 export type VoiceModelConfig = {
     id: Generated<string>;
+    qualityScore: number;
+    f0Curve: string;
     transposePitch: number;
     pitchExtractionMethod: string;
     searchFeatureRatio: number;

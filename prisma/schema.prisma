@@ -106,6 +106,8 @@ model VoiceModel {
 // or "ModelParams"
 model VoiceModelConfig {
   id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  qualityScore          Float
+  f0Curve               String
   transposePitch        Int
   pitchExtractionMethod String
   searchFeatureRatio    Float

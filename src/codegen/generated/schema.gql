@@ -56,8 +56,10 @@ input CreateVoiceModelBackupUrlInput {
 input CreateVoiceModelConfigInput {
   artifactProtection: Float!
   audioResampling: Int!
+  f0Curve: String!
   filterRadius: Int!
   pitchExtractionMethod: String!
+  qualityScore: Float!
   searchFeatureRatio: Float!
   transposePitch: Int!
   voiceModelId: ID!
@@ -170,9 +172,11 @@ input UpdateVoiceModelBackupUrlInput {
 input UpdateVoiceModelConfigInput {
   artifactProtection: Float
   audioResampling: Int
+  f0Curve: String
   filterRadius: Int
   id: ID!
   pitchExtractionMethod: String
+  qualityScore: Float
   searchFeatureRatio: Float
   transposePitch: Int
   voiceModelId: ID
@@ -241,9 +245,11 @@ type VoiceModelBackupUrlsEdge {
 type VoiceModelConfig {
   artifactProtection: Float!
   audioResampling: Int!
+  f0Curve: String!
   filterRadius: Int!
   id: ID!
   pitchExtractionMethod: String!
+  qualityScore: Float!
   searchFeatureRatio: Float!
   transposePitch: Int!
   voiceModel: VoiceModel!

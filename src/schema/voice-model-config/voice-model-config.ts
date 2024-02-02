@@ -6,6 +6,8 @@ builder.prismaObject("VoiceModelConfig", {
   fields: (t) => ({
     // Fields
     id: t.exposeID("id"),
+    qualityScore: t.exposeFloat("qualityScore"),
+    f0Curve: t.exposeString("f0Curve"),
     transposePitch: t.exposeInt("transposePitch"),
     pitchExtractionMethod: t.exposeString("pitchExtractionMethod"),
     searchFeatureRatio: t.exposeFloat("searchFeatureRatio"),
