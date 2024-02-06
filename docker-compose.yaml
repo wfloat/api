@@ -30,6 +30,7 @@ services:
     depends_on:
       - postgres
       - pgadmin
+      - tts
       - rvc0
       - rvc1
       - rvc2
@@ -63,6 +64,15 @@ services:
     restart: always
     depends_on:
       - postgres
+
+  tts:
+    container_name: tts
+    image: mitchsayre/tts:latest
+    environment:
+      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY}
+      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION}
+    ports:
+      - 5379:5379
 
   rvc0:
     <<: *rvc-common-settings
