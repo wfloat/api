@@ -7,7 +7,7 @@ builder.prismaObject("TextToSpeech", {
     // Fields
     id: t.exposeID("id"),
     inputText: t.exposeString("inputText"),
-    ouputUrl: t.exposeString("ouputUrl"),
+    outputUrl: t.exposeString("outputUrl"),
     voiceModelId: t.exposeID("voiceModelId"),
 
     // Relations

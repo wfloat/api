@@ -160,7 +160,7 @@ model VoiceModelBackupUrl {
 model TextToSpeech {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inputText    String
-  ouputUrl     String
+  outputUrl    String
   voiceModelId String     @db.Uuid
   voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "VoiceModelTextToSpeeches")
 }

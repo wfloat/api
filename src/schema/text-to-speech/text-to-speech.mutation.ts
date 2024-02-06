@@ -9,7 +9,7 @@ const CreateTextToSpeechInput =
 CreateTextToSpeechInput.implement({
   fields: (t) => ({
     inputText: t.string({ required: true }),
-    ouputUrl: t.string({ required: true }),
+    outputUrl: t.string({ required: true }),
     voiceModelId: t.id({ required: true }),
   }),
 });
@@ -43,7 +43,7 @@ UpdateTextToSpeechInput.implement({
   fields: (t) => ({
     id: t.id({ required: true }),
     inputText: t.string(),
-    ouputUrl: t.string(),
+    outputUrl: t.string(),
     voiceModelId: t.id(),
   }),
 });
@@ -52,7 +52,7 @@ type UpdateTextToSpeechInputShape = typeof UpdateTextToSpeechInput.$inferInput;
 const TextToSpeechNullability: { [K in keyof TextToSpeech]: boolean } = {
   id: false,
   inputText: false,
-  ouputUrl: false,
+  outputUrl: false,
   voiceModelId: false,
 };
 

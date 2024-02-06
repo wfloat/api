@@ -17,7 +17,7 @@ export type AIHubVoiceModel = {
 export type TextToSpeech = {
     id: Generated<string>;
     inputText: string;
-    ouputUrl: string;
+    outputUrl: string;
     voiceModelId: string;
 };
 export type VoiceModel = {
