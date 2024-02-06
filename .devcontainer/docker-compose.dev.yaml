@@ -3,3 +3,9 @@ services:
   api:
     # Overrides default command so the development container keeps running until the user disconnects
     command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - .:/usr/src/api
+      - ../.git/:/usr/src/.git/ # Ensure git works in the devcontainer since this is a submodule
+      - notused:/usr/src/api/node_modules
+volumes:
+  notused:

@@ -5,7 +5,7 @@
   "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.dev.yaml"],
   "service": "api",
   "remoteUser": "node",
-  "workspaceFolder": "/opt/node_app/api",
+  "workspaceFolder": "/usr/src/api",
   "shutdownAction": "stopCompose",
   // "build": {
   // 	// Sets the run context to one level up instead of the .devcontainer folder.
@@ -17,6 +17,9 @@
     "vscode": {
       "extensions": ["esbenp.prettier-vscode", "Prisma.prisma"]
     }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
   }
 
   // Features to add to the dev container. More info: https://containers.dev/features.

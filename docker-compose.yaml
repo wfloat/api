@@ -26,10 +26,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - .:/opt/node_app/api
-      - ./package.json:/opt/node_app/package.json
-      - ./package-lock.json:/opt/node_app/package-lock.json
-      - notused:/opt/node_app/api/node_modules
+      - /usr/src/api/node_modules
     depends_on:
       - postgres
       - pgadmin
@@ -96,5 +93,4 @@ services:
       - 7867:7865
 
 volumes:
-  notused:
   postgres-data:
