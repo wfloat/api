@@ -15,7 +15,11 @@
   // },
   "customizations": {
     "vscode": {
-      "extensions": ["esbenp.prettier-vscode", "Prisma.prisma"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "streetsidesoftware.code-spell-checker"
+      ]
     }
   },
   "features": {

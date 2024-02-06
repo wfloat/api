@@ -3,13 +3,12 @@ import { db } from "../../database.js";
 import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { TextToSpeech } from "@prisma/client";
 
-type CreateTextToSpeechInputType = Omit<TextToSpeech, "id">;
+type CreateTextToSpeechInputType = Omit<TextToSpeech, "id" | "outputUrl">;
 const CreateTextToSpeechInput =
   builder.inputRef<CreateTextToSpeechInputType>("CreateTextToSpeechInput");
 CreateTextToSpeechInput.implement({
   fields: (t) => ({
     inputText: t.string({ required: true }),
-    outputUrl: t.string({ required: true }),
     voiceModelId: t.id({ required: true }),
   }),
 });
@@ -23,9 +22,22 @@ builder.mutationField("createTextToSpeech", (t) =>
       input: t.arg({ type: CreateTextToSpeechInput, required: true }),
     },
     resolve: async (query, parent, args, context, info) => {
+      const voiceModelConfig = await context.loaders.voiceModelConfig.load(args.input.voiceModelId);
+
+      // text-to-speech request using args.input.inputText
+      // Write response audio to shared volume
+      // Make Gradio client request against the audio response file (don't forget to clear the tmp folder at the end of this)
+      // Write the voice converted audio to S3
+      // Delete the input and output audio
+      // Get temporary signed URL
+      // Set outputUrl to temporary signed URL
+
+      const outputUrl = "";
+      const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl };
+
       const result = await db
         .insertInto("TextToSpeech")
-        .values(args.input)
+        .values(input)
         .returning(["id"])
         .executeTakeFirstOrThrow();
 
