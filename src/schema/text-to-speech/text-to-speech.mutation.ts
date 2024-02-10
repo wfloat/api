@@ -81,15 +81,25 @@ builder.mutationField("createTextToSpeech", (t) =>
           );
         } else {
           const blob = await convertResponse.blob();
-          const fileKey = await uploadSpeechToS3(blob);
-          const signedUrl = await generateSpeechSignedUrl(fileKey);
 
-          const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl: signedUrl };
+          const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl: "" };
 
           const result = await db
             .insertInto("TextToSpeech")
             .values(input)
             .returning(["id"])
+            .executeTakeFirstOrThrow();
+
+          const fileKey = await uploadSpeechToS3(blob, `${result.id}.wav`);
+          const signedUrl = await generateSpeechSignedUrl(fileKey);
+
+          await db
+            .updateTable("TextToSpeech")
+            .set({
+              id: result.id,
+              outputUrl: signedUrl,
+            })
+            .where("id", "=", result.id)
             .executeTakeFirstOrThrow();
 
           const row = await context.loaders.textToSpeech.load(result.id);
