@@ -79,27 +79,27 @@ services:
     <<: *rvc-common-settings
     container_name: rvc0
     volumes:
-      - ./shared/weights:/app/assets/weights
-      - ./shared:/app/shared
-      - ./tmp/rvc0:/tmp/gradio
+      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+      - ../packages/rvc-gradio-server/shared:/app/shared
+      - ../packages/rvc-gradio-server/tmp/rvc0:/tmp/gradio
     ports:
       - 7865:7865
   rvc1:
     <<: *rvc-common-settings
     container_name: rvc1
     volumes:
-      - ./shared/weights:/app/assets/weights
-      - ./shared:/app/shared
-      - ./tmp/rvc1:/tmp/gradio
+      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+      - ../packages/rvc-gradio-server/shared:/app/shared
+      - ../packages/rvc-gradio-server/tmp/rvc1:/tmp/gradio
     ports:
       - 7866:7865
   rvc2:
     <<: *rvc-common-settings
     container_name: rvc2
     volumes:
-      - ./shared/weights:/app/assets/weights
-      - ./shared:/app/shared
-      - ./tmp/rvc2:/tmp/gradio
+      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+      - ../packages/rvc-gradio-server/shared:/app/shared
+      - ../packages/rvc-gradio-server/tmp/rvc2:/tmp/gradio
     ports:
       - 7867:7865
 

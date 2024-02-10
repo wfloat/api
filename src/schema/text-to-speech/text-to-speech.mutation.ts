@@ -2,6 +2,7 @@ import { builder } from "../../builder.js";
 import { db } from "../../database.js";
 import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { TextToSpeech } from "@prisma/client";
+import { generateSpeechSignedUrl, uploadSpeechToS3 } from "../../util/aws.js";
 
 type CreateTextToSpeechInputType = Omit<TextToSpeech, "id" | "outputUrl">;
 const CreateTextToSpeechInput =
@@ -50,49 +51,52 @@ builder.mutationField("createTextToSpeech", (t) =>
         if (!ttsResponse.ok) {
           throw new Error(`Text_to_speech service responded with status ${ttsResponse.status}`);
         }
-        // const audioBlob = await ttsResponse.blob();
 
-        // const formData = new FormData();
-        // formData.append("audio", audioBlob);
         const voiceConvertArgs = {
-          // inference_params: {
-          //   transpose_pitch: voiceModelConfig!.transposePitch,
-          //   pitch_extraction_method: voiceModelConfig!.pitchExtractionMethod,
-          //   search_feature_ratio: voiceModelConfig!.searchFeatureRatio,
-          //   filter_radius: voiceModelConfig!.filterRadius,
-          //   audio_resampling: voiceModelConfig!.audioResampling,
-          //   volume_envelope_scaling: voiceModelConfig!.volumeEnvelopeScaling,
-          //   artifact_protection: voiceModelConfig!.artifactProtection,
-          // },
+          inference_params: {
+            transpose_pitch: voiceModelConfig!.transposePitch,
+            pitch_extraction_method: voiceModelConfig!.pitchExtractionMethod,
+            search_feature_ratio: voiceModelConfig!.searchFeatureRatio,
+            filter_radius: voiceModelConfig!.filterRadius,
+            audio_resampling: voiceModelConfig!.audioResampling,
+            volume_envelope_scaling: voiceModelConfig!.volumeEnvelopeScaling,
+            artifact_protection: voiceModelConfig!.artifactProtection,
+          },
           weights_sha256: voiceModel!.checksumSHA256ForWeights,
           f0_curve: voiceModelConfig!.f0Curve,
         };
 
-        // formData.append("args", JSON.stringify(voiceConvertArgs));
-
-        // const test = await fetch("http://localhost:5950/hello", {
-        //   method: "GET",
-        // });
         const audioBlob = await ttsResponse.blob();
         const formData = new FormData();
-        formData.append("audio", audioBlob); // Append the audio file
-        formData.append("args", JSON.stringify(voiceConvertArgs)); // Convert JSON data to string and append
+        formData.append("audio", audioBlob);
+        formData.append("args", JSON.stringify(voiceConvertArgs));
 
         const convertResponse = await fetch("http://localhost:5950/voice_convert", {
           method: "POST",
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
           body: formData,
-          // body: formData,
         });
         if (!convertResponse.ok) {
           throw new Error(
             `voice conversion service responded with status ${convertResponse.status}`
           );
+        } else {
+          const blob = await convertResponse.blob();
+          const fileKey = await uploadSpeechToS3(blob);
+          const signedUrl = await generateSpeechSignedUrl(fileKey);
+
+          const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl: signedUrl };
+
+          const result = await db
+            .insertInto("TextToSpeech")
+            .values(input)
+            .returning(["id"])
+            .executeTakeFirstOrThrow();
+
+          const row = await context.loaders.textToSpeech.load(result.id);
+          return row as NonNullable<typeof row>;
         }
       } catch (error) {
-        console.error("Failed to create text to speech", error);
+        throw Error(`Failed to create text to speech ${error}`);
       }
 
       // text-to-speech request using args.input.inputText
@@ -102,18 +106,6 @@ builder.mutationField("createTextToSpeech", (t) =>
       // Delete the input and output audio
       // Get temporary signed URL
       // Set outputUrl to temporary signed URL
-
-      const outputUrl = "";
-      const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl };
-
-      const result = await db
-        .insertInto("TextToSpeech")
-        .values(input)
-        .returning(["id"])
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.textToSpeech.load(result.id);
-      return row as NonNullable<typeof row>;
     },
   })
 );
