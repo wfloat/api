@@ -25,6 +25,7 @@ services:
       - POSTGRES_SERVICE_NAME=${POSTGRES_SERVICE_NAME}
     ports:
       - "4000:4000"
+    network_mode: host
     volumes:
       - /usr/src/api/node_modules
     depends_on:

@@ -22,7 +22,78 @@ builder.mutationField("createTextToSpeech", (t) =>
       input: t.arg({ type: CreateTextToSpeechInput, required: true }),
     },
     resolve: async (query, parent, args, context, info) => {
-      const voiceModelConfig = await context.loaders.voiceModelConfig.load(args.input.voiceModelId);
+      const voiceModel = await context.loaders.voiceModel.load(args.input.voiceModelId);
+      const voiceModelConfig = await context.loaders.modelConfigFromVoiceModel.load(
+        args.input.voiceModelId
+      );
+      const aiHubVoiceModel = await context.loaders.sourceModelFromVoiceModel.load(
+        args.input.voiceModelId
+      );
+      const voiceModelProfile = await context.loaders.profileFromAIHubVoiceModel.load(
+        aiHubVoiceModel!.id
+      );
+
+      const voiceName = voiceModelProfile?.gender === "male" ? "Andrew" : "Ava";
+      try {
+        const ttsData = {
+          voice: voiceName,
+          inputText: args.input.inputText,
+        };
+        const ttsResponse = await fetch("http://localhost:5379/text_to_speech", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(ttsData),
+        });
+
+        if (!ttsResponse.ok) {
+          throw new Error(`Text_to_speech service responded with status ${ttsResponse.status}`);
+        }
+        // const audioBlob = await ttsResponse.blob();
+
+        // const formData = new FormData();
+        // formData.append("audio", audioBlob);
+        const voiceConvertArgs = {
+          // inference_params: {
+          //   transpose_pitch: voiceModelConfig!.transposePitch,
+          //   pitch_extraction_method: voiceModelConfig!.pitchExtractionMethod,
+          //   search_feature_ratio: voiceModelConfig!.searchFeatureRatio,
+          //   filter_radius: voiceModelConfig!.filterRadius,
+          //   audio_resampling: voiceModelConfig!.audioResampling,
+          //   volume_envelope_scaling: voiceModelConfig!.volumeEnvelopeScaling,
+          //   artifact_protection: voiceModelConfig!.artifactProtection,
+          // },
+          weights_sha256: voiceModel!.checksumSHA256ForWeights,
+          f0_curve: voiceModelConfig!.f0Curve,
+        };
+
+        // formData.append("args", JSON.stringify(voiceConvertArgs));
+
+        // const test = await fetch("http://localhost:5950/hello", {
+        //   method: "GET",
+        // });
+        const audioBlob = await ttsResponse.blob();
+        const formData = new FormData();
+        formData.append("audio", audioBlob); // Append the audio file
+        formData.append("args", JSON.stringify(voiceConvertArgs)); // Convert JSON data to string and append
+
+        const convertResponse = await fetch("http://localhost:5950/voice_convert", {
+          method: "POST",
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+          body: formData,
+          // body: formData,
+        });
+        if (!convertResponse.ok) {
+          throw new Error(
+            `voice conversion service responded with status ${convertResponse.status}`
+          );
+        }
+      } catch (error) {
+        console.error("Failed to create text to speech", error);
+      }
 
       // text-to-speech request using args.input.inputText
       // Write response audio to shared volume
