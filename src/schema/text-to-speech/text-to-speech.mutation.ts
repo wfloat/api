@@ -35,10 +35,16 @@ builder.mutationField("createTextToSpeech", (t) =>
       );
 
       const voiceName = voiceModelProfile?.gender === "male" ? "Andrew" : "Ava";
+
+      let inputText = args.input.inputText;
+      if (inputText.length > 1250) {
+        inputText = inputText.substring(0, 1250);
+      }
+
       try {
         const ttsData = {
           voice: voiceName,
-          inputText: args.input.inputText,
+          inputText: inputText,
         };
         const ttsResponse = await fetch("http://localhost:5379/text_to_speech", {
           method: "POST",
