@@ -33,7 +33,9 @@ builder.queryFields((t) => ({
         // Based on https://the-guild.dev/blog/graphql-cursor-pagination-with-postgresql
         let result = await db
           .selectFrom("VoiceModel")
-          .select(["id", "name"])
+          .select(["id", "name", "hidden"])
+
+          .where("hidden", "=", false)
 
           .$if(args.first ? true : false, (qb) => qb.orderBy(["name asc", "id asc"]))
           .$if(args.last ? true : false, (qb) => qb.orderBy(["name desc", "id desc"]))
