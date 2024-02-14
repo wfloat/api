@@ -24,6 +24,7 @@ export type TextToSpeech = {
 export type User = {
     id: Generated<string>;
     accessKey: string;
+    name: string;
 };
 export type VoiceModel = {
     id: Generated<string>;

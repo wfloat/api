@@ -80,6 +80,7 @@ generator kysely {
 model User {
   id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   accessKey      String         @unique
+  name           String
   textToSpeeches TextToSpeech[] @relation("UserTextToSpeeches")
 }
 
