@@ -4,7 +4,7 @@ import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { TextToSpeech } from "@prisma/client";
 import { generateSpeechSignedUrl, uploadSpeechToS3 } from "../../util/aws.js";
 
-type CreateTextToSpeechInputType = Omit<TextToSpeech, "id" | "outputUrl">;
+type CreateTextToSpeechInputType = Omit<TextToSpeech, "id" | "outputUrl" | "userId">;
 const CreateTextToSpeechInput =
   builder.inputRef<CreateTextToSpeechInputType>("CreateTextToSpeechInput");
 CreateTextToSpeechInput.implement({
@@ -88,7 +88,11 @@ builder.mutationField("createTextToSpeech", (t) =>
         } else {
           const blob = await convertResponse.blob();
 
-          const input: Omit<TextToSpeech, "id"> = { ...args.input, outputUrl: "" };
+          const input: Omit<TextToSpeech, "id"> = {
+            ...args.input,
+            userId: context.me.id,
+            outputUrl: "",
+          };
 
           const result = await db
             .insertInto("TextToSpeech")
@@ -145,6 +149,7 @@ const TextToSpeechNullability: { [K in keyof TextToSpeech]: boolean } = {
   inputText: false,
   outputUrl: false,
   voiceModelId: false,
+  userId: false,
 };
 
 builder.mutationField("updateTextToSpeech", (t) =>
