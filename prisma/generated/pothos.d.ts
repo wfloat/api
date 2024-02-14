@@ -1,6 +1,25 @@
 /* eslint-disable */
-import type { Prisma, VoiceModel, VoiceModelConfig, AIHubVoiceModel, VoiceModelProfile, VoiceModelBackupUrl, TextToSpeech } from "@prisma/client";
+import type { Prisma, User, VoiceModel, VoiceModelConfig, AIHubVoiceModel, VoiceModelProfile, VoiceModelBackupUrl, TextToSpeech } from "@prisma/client";
 export default interface PrismaTypes {
+    User: {
+        Name: "User";
+        Shape: User;
+        Include: Prisma.UserInclude;
+        Select: Prisma.UserSelect;
+        OrderBy: Prisma.UserOrderByWithRelationInput;
+        WhereUnique: Prisma.UserWhereUniqueInput;
+        Where: Prisma.UserWhereInput;
+        Create: {};
+        Update: {};
+        RelationName: "textToSpeeches";
+        ListRelations: "textToSpeeches";
+        Relations: {
+            textToSpeeches: {
+                Shape: TextToSpeech[];
+                Name: "TextToSpeech";
+            };
+        };
+    };
     VoiceModel: {
         Name: "VoiceModel";
         Shape: VoiceModel;
@@ -122,12 +141,16 @@ export default interface PrismaTypes {
         Where: Prisma.TextToSpeechWhereInput;
         Create: {};
         Update: {};
-        RelationName: "voiceModel";
+        RelationName: "voiceModel" | "user";
         ListRelations: never;
         Relations: {
             voiceModel: {
                 Shape: VoiceModel;
                 Name: "VoiceModel";
+            };
+            user: {
+                Shape: User;
+                Name: "User";
             };
         };
     };

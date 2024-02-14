@@ -3,6 +3,7 @@ import { db } from "./database.js";
 import {
   AIHubVoiceModel,
   TextToSpeech,
+  User,
   VoiceModel,
   VoiceModelBackupUrl,
   VoiceModelConfig,
@@ -131,6 +132,19 @@ export function createLoaders() {
             resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
           } catch (error) {
             console.error("Error loading VoiceModelProfile:", error);
+            resolve(ids.map(() => null)); // Resolve with nulls in case of error
+          }
+        })
+    ),
+    user: new DataLoader<string, User | null>(
+      (ids) =>
+        new Promise(async (resolve) => {
+          try {
+            const rows = await db.selectFrom("User").selectAll().where("id", "in", ids).execute();
+
+            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
+          } catch (error) {
+            console.error("Error loading User:", error);
             resolve(ids.map(() => null)); // Resolve with nulls in case of error
           }
         })

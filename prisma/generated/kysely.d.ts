@@ -19,6 +19,11 @@ export type TextToSpeech = {
     inputText: string;
     outputUrl: string;
     voiceModelId: string;
+    userId: string;
+};
+export type User = {
+    id: Generated<string>;
+    accessKey: string;
 };
 export type VoiceModel = {
     id: Generated<string>;
@@ -65,6 +70,7 @@ export type VoiceModelProfile = {
 export type DB = {
     AIHubVoiceModel: AIHubVoiceModel;
     TextToSpeech: TextToSpeech;
+    User: User;
     VoiceModel: VoiceModel;
     VoiceModelBackupUrl: VoiceModelBackupUrl;
     VoiceModelConfig: VoiceModelConfig;

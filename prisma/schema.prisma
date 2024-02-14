@@ -19,12 +19,6 @@ generator kysely {
   fileName = "kysely.d.ts"
 }
 
-// model User {
-//   id         String      @id
-//   characters Character[] @relation("3")
-//   voices     Voice[]     @relation("4")
-// }
-
 // model Character {
 //   id      String  @id
 //   photo   String?
@@ -82,6 +76,12 @@ generator kysely {
 
 //   voiceModels VoiceModel[] @relation("2")
 // }
+
+model User {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accessKey      String         @unique
+  textToSpeeches TextToSpeech[] @relation("UserTextToSpeeches")
+}
 
 model VoiceModel {
   id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -162,5 +162,7 @@ model TextToSpeech {
   inputText    String
   outputUrl    String
   voiceModelId String     @db.Uuid
+  userId       String     @db.Uuid
   voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "VoiceModelTextToSpeeches")
+  user         User       @relation(fields: [userId], references: [id], name: "UserTextToSpeeches")
 }
