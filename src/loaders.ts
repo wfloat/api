@@ -136,16 +136,20 @@ export function createLoaders() {
           }
         })
     ),
-    user: new DataLoader<string, User | null>(
-      (ids) =>
+    userUsingAccessKey: new DataLoader<string, User | null>(
+      (keys) =>
         new Promise(async (resolve) => {
           try {
-            const rows = await db.selectFrom("User").selectAll().where("id", "in", ids).execute();
+            const rows = await db
+              .selectFrom("User")
+              .selectAll()
+              .where("accessKey", "in", keys)
+              .execute();
 
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
+            resolve(keys.map((key) => rows.find((row) => row.accessKey === key) || null));
           } catch (error) {
             console.error("Error loading User:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
+            resolve(keys.map(() => null)); // Resolve with nulls in case of error
           }
         })
     ),

@@ -17,7 +17,7 @@ const { url } = await startStandaloneServer(server, {
     }
 
     const myLoaders = createLoaders();
-    const me = await myLoaders.user.load(authorizationHeader);
+    const me = await myLoaders.userUsingAccessKey.load(authorizationHeader);
 
     if (!me) {
       throw Error("Not authorized.");
