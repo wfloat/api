@@ -130,50 +130,50 @@ builder.mutationField("createTextToSpeech", (t) =>
   })
 );
 
-type UpdateTextToSpeechInputType = Required<Pick<TextToSpeech, "id">> &
-  Partial<Omit<TextToSpeech, "id">>; // TODO: Make this cleaner
-const UpdateTextToSpeechInput =
-  builder.inputRef<UpdateTextToSpeechInputType>("UpdateTextToSpeechInput");
-UpdateTextToSpeechInput.implement({
-  fields: (t) => ({
-    id: t.id({ required: true }),
-    inputText: t.string(),
-    outputUrl: t.string(),
-    voiceModelId: t.id(),
-  }),
-});
-type UpdateTextToSpeechInputShape = typeof UpdateTextToSpeechInput.$inferInput;
+// type UpdateTextToSpeechInputType = Required<Pick<TextToSpeech, "id">> &
+//   Partial<Omit<TextToSpeech, "id">>; // TODO: Make this cleaner
+// const UpdateTextToSpeechInput =
+//   builder.inputRef<UpdateTextToSpeechInputType>("UpdateTextToSpeechInput");
+// UpdateTextToSpeechInput.implement({
+//   fields: (t) => ({
+//     id: t.id({ required: true }),
+//     inputText: t.string(),
+//     outputUrl: t.string(),
+//     voiceModelId: t.id(),
+//   }),
+// });
+// type UpdateTextToSpeechInputShape = typeof UpdateTextToSpeechInput.$inferInput;
 
-const TextToSpeechNullability: { [K in keyof TextToSpeech]: boolean } = {
-  id: false,
-  inputText: false,
-  outputUrl: false,
-  voiceModelId: false,
-  userId: false,
-};
+// const TextToSpeechNullability: { [K in keyof TextToSpeech]: boolean } = {
+//   id: false,
+//   inputText: false,
+//   outputUrl: false,
+//   voiceModelId: false,
+//   userId: false,
+// };
 
-builder.mutationField("updateTextToSpeech", (t) =>
-  t.prismaField({
-    type: "TextToSpeech",
-    nullable: false,
-    args: {
-      input: t.arg({ type: UpdateTextToSpeechInput, required: true }),
-    },
-    resolve: async (query, parent, args, context, info) => {
-      const input = removeNullFieldsThatAreNonNullable<TextToSpeech>(
-        { ...args.input },
-        TextToSpeechNullability
-      );
-      input.id = undefined;
+// builder.mutationField("updateTextToSpeech", (t) =>
+//   t.prismaField({
+//     type: "TextToSpeech",
+//     nullable: false,
+//     args: {
+//       input: t.arg({ type: UpdateTextToSpeechInput, required: true }),
+//     },
+//     resolve: async (query, parent, args, context, info) => {
+//       const input = removeNullFieldsThatAreNonNullable<TextToSpeech>(
+//         { ...args.input },
+//         TextToSpeechNullability
+//       );
+//       input.id = undefined;
 
-      const result = await db
-        .updateTable("TextToSpeech")
-        .set(input)
-        .where("id", "=", args.input.id)
-        .executeTakeFirstOrThrow();
+//       const result = await db
+//         .updateTable("TextToSpeech")
+//         .set(input)
+//         .where("id", "=", args.input.id)
+//         .executeTakeFirstOrThrow();
 
-      const row = await context.loaders.textToSpeech.load(args.input.id);
-      return row as NonNullable<typeof row>;
-    },
-  })
-);
+//       const row = await context.loaders.textToSpeech.load(args.input.id);
+//       return row as NonNullable<typeof row>;
+//     },
+//   })
+// );

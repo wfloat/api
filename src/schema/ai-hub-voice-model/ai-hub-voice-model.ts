@@ -1,6 +1,6 @@
 import { builder } from "../../builder.js";
-import "./ai-hub-voice-model.query.js";
-import "./ai-hub-voice-model.mutation.js";
+// import "./ai-hub-voice-model.query.js";
+// import "./ai-hub-voice-model.mutation.js";
 import { db } from "../../database.js";
 import { PAGE_LIMIT } from "../../loaders.js";
 import { VoiceModelBackupUrl } from "@prisma/client";
