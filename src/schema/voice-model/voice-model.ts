@@ -28,15 +28,15 @@ builder.prismaObject("VoiceModel", {
         await context.loaders.sourceModelFromVoiceModel.load(root.id),
     }),
 
-    // Connections
-    textToSpeeches: t.prismaConnection(
-      {
-        type: "TextToSpeech",
-        cursor: "id",
-        resolve: async (query, parent, args, context, info) => undefined,
-      },
-      { name: "VoiceModelTextToSpeechesConnection" },
-      { name: "VoiceModelTextToSpeechesEdge" }
-    ),
+    // // Connections
+    // textToSpeeches: t.prismaConnection(
+    //   {
+    //     type: "TextToSpeech",
+    //     cursor: "id",
+    //     resolve: async (query, parent, args, context, info) => undefined,
+    //   },
+    //   { name: "VoiceModelTextToSpeechesConnection" },
+    //   { name: "VoiceModelTextToSpeechesEdge" }
+    // ),
   }),
 });
