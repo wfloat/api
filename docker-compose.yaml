@@ -33,6 +33,7 @@ services:
     network_mode: host
     volumes:
       - /usr/src/api/node_modules
+      - ./dump:/usr/src/api/dump
     depends_on:
       - postgres
       - pgadmin
@@ -70,9 +71,6 @@ services:
     restart: always
     depends_on:
       - postgres
-    volumes:
-      - ./dump:/dump
-
   # tts:
   #   container_name: tts
   #   image: mitchsayre/tts:latest
