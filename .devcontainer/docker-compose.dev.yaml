@@ -8,6 +8,9 @@ services:
       - ../.git/:/usr/src/.git/ # Ensure git works in the devcontainer since this is a submodule
       - notused_node_modules:/usr/src/api/node_modules
       - notused_prisma_generated:/usr/src/api/prisma/generated
+    pgadmin:
+      -./dump:/dump
+
 volumes:
   notused_node_modules:
   notused_prisma_generated:
