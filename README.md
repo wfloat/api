@@ -36,6 +36,8 @@ npm run codegen
 pg_dump -U postgres -h localhost -p 5432 wfloat-local | gzip > "wfloat-local_$(date '+%Y-%m-%d_%H-%M-%S').sql.gz"
 
 # Restore
+# copy the database backup into the dump folder, run the command in the docker container
+
 gunzip -c wfloat-local_YYYY-MM-DD_HH-MM-SS.sql.gz | psql -U postgres -h localhost -p 5432 wfloat-local
 ```
 
