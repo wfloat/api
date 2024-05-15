@@ -19,7 +19,10 @@
         "esbenp.prettier-vscode",
         "Prisma.prisma",
         "streetsidesoftware.code-spell-checker"
-      ]
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
   },
   "features": {
