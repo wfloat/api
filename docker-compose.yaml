@@ -12,35 +12,35 @@ version: '3.8'
 #             capabilities: [ gpu ]
 
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - POSTGRES_CONNECTION_URL=${POSTGRES_CONNECTION_URL}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_PW=${POSTGRES_PW}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_SERVICE_NAME=${POSTGRES_SERVICE_NAME}
-      - AWS_REGION=${AWS_REGION}
-      - AWS_SPEECH_BUCKET_NAME=${AWS_SPEECH_BUCKET_NAME}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - POSTGRES_CONNECTION_URL=${POSTGRES_CONNECTION_URL}
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #     - POSTGRES_PW=${POSTGRES_PW}
+  #     - POSTGRES_PORT=${POSTGRES_PORT}
+  #     - POSTGRES_SERVICE_NAME=${POSTGRES_SERVICE_NAME}
+  #     - AWS_REGION=${AWS_REGION}
+  #     - AWS_SPEECH_BUCKET_NAME=${AWS_SPEECH_BUCKET_NAME}
+  #     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  #     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
-    ports:
-      - "4000:4000"
-    network_mode: host
-    volumes:
-      - /usr/src/api/node_modules
-      - ./dump:/usr/src/api/dump
-    depends_on:
-      - postgres
-      - pgadmin
-      # - tts
-      # - rvc0
-      # - rvc1
-      # - rvc2
+  #   ports:
+  #     - "4000:4000"
+  #   network_mode: host
+  #   volumes:
+  #     - /usr/src/api/node_modules
+  #     - ./dump:/usr/src/api/dump
+  #   depends_on:
+  #     - postgres
+  #     - pgadmin
+  #     # - tts
+  #     # - rvc0
+  #     # - rvc1
+  #     # - rvc2
 
   postgres:
     container_name: postgres
