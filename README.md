@@ -1,5 +1,35 @@
 # API
 
+## Temporary fix
+
+### Starting
+
+```bash
+# Change directories into the api folder. Example:
+cd ~/dev/wfloat/api
+
+# Start the Postgres database and PGAdmin
+docker compose up
+
+# Open http://localhost:5050 in the web browser to view PGAdmin
+
+# Start the API
+npm run start
+
+# Open http://localhost:4000 in the web browser to view the Apollo GraphQL server
+```
+
+### Debugging
+
+```bash
+# Run this instead of npm run start:
+npm run build
+
+# Press the "Run and debug" tab in VSCode on the left nav bar
+# Press the green play button
+# Place breakpoints as needed
+```
+
 ## Getting started
 
 ```bash
