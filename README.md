@@ -9,6 +9,20 @@ docker compose up
 
 ### Usage
 
+#### Launch
+
+```bash
+npm run start
+```
+
+#### Debug
+
+```bash
+npm run build
+```
+
+In vscode select the run and debug tab. Launch index.ts.
+
 #### Code generation
 
 ```bash
