@@ -1,5 +1,5 @@
 import { builder } from "../../builder.js";
-// import "./text-to-speech.query.js";
+import "./text-to-speech.query.js";
 import "./text-to-speech.mutation.js";
 
 builder.prismaObject("TextToSpeech", {

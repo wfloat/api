@@ -1,15 +1,15 @@
 # https://github.com/BretFisher/node-docker-good-defaults/blob/main/docker-compose.yml
 version: '3.8'
 
-x-function: &rvc-common-settings
-  image: mitchsayre/rvc:latest
-  deploy:
-    resources:
-      reservations:
-        devices:
-          - driver: nvidia
-            count: 1
-            capabilities: [ gpu ]
+# x-function: &rvc-common-settings
+#   image: mitchsayre/rvc:latest
+#   deploy:
+#     resources:
+#       reservations:
+#         devices:
+#           - driver: nvidia
+#             count: 1
+#             capabilities: [ gpu ]
 
 services:
   api:
@@ -36,10 +36,10 @@ services:
     depends_on:
       - postgres
       - pgadmin
-      - tts
-      - rvc0
-      - rvc1
-      - rvc2
+      # - tts
+      # - rvc0
+      # - rvc1
+      # - rvc2
 
   postgres:
     container_name: postgres
@@ -71,42 +71,42 @@ services:
     depends_on:
       - postgres
 
-  tts:
-    container_name: tts
-    image: mitchsayre/tts:latest
-    environment:
-      - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY}
-      - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION}
-    ports:
-      - 5379:5379
+  # tts:
+  #   container_name: tts
+  #   image: mitchsayre/tts:latest
+  #   environment:
+  #     - AZURE_SPEECH_KEY=${AZURE_SPEECH_KEY}
+  #     - AZURE_SPEECH_REGION=${AZURE_SPEECH_REGION}
+  #   ports:
+  #     - 5379:5379
 
-  rvc0:
-    <<: *rvc-common-settings
-    container_name: rvc0
-    volumes:
-      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
-      - ../packages/rvc-gradio-server/shared:/app/shared
-      - ../packages/rvc-gradio-server/tmp/rvc0:/tmp/gradio
-    ports:
-      - 7865:7865
-  rvc1:
-    <<: *rvc-common-settings
-    container_name: rvc1
-    volumes:
-      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
-      - ../packages/rvc-gradio-server/shared:/app/shared
-      - ../packages/rvc-gradio-server/tmp/rvc1:/tmp/gradio
-    ports:
-      - 7866:7865
-  rvc2:
-    <<: *rvc-common-settings
-    container_name: rvc2
-    volumes:
-      - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
-      - ../packages/rvc-gradio-server/shared:/app/shared
-      - ../packages/rvc-gradio-server/tmp/rvc2:/tmp/gradio
-    ports:
-      - 7867:7865
+  # rvc0:
+  #   <<: *rvc-common-settings
+  #   container_name: rvc0
+  #   volumes:
+  #     - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+  #     - ../packages/rvc-gradio-server/shared:/app/shared
+  #     - ../packages/rvc-gradio-server/tmp/rvc0:/tmp/gradio
+  #   ports:
+  #     - 7865:7865
+  # rvc1:
+  #   <<: *rvc-common-settings
+  #   container_name: rvc1
+  #   volumes:
+  #     - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+  #     - ../packages/rvc-gradio-server/shared:/app/shared
+  #     - ../packages/rvc-gradio-server/tmp/rvc1:/tmp/gradio
+  #   ports:
+  #     - 7866:7865
+  # rvc2:
+  #   <<: *rvc-common-settings
+  #   container_name: rvc2
+  #   volumes:
+  #     - ../packages/rvc-gradio-server/shared/weights:/app/assets/weights
+  #     - ../packages/rvc-gradio-server/shared:/app/shared
+  #     - ../packages/rvc-gradio-server/tmp/rvc2:/tmp/gradio
+  #   ports:
+  #     - 7867:7865
 
 volumes:
   postgres-data:

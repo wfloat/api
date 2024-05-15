@@ -1,6 +1,6 @@
 import { builder } from "../../builder.js";
-// import "./voice-model-config.query.js";
-// import "./voice-model-config.mutation.js";
+import "./voice-model-config.query.js";
+import "./voice-model-config.mutation.js";
 
 builder.prismaObject("VoiceModelConfig", {
   fields: (t) => ({
