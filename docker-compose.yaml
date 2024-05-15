@@ -71,7 +71,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      -./dump:/dump
+      - ./dump:/dump
 
   # tts:
   #   container_name: tts
