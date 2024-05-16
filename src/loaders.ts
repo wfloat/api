@@ -1,5 +1,10 @@
 import DataLoader from "dataloader";
 import { db } from "./database.js";
+import { DB } from "../prisma/generated/kysely.js";
+import { Prisma } from "@prisma/client";
+import PrismaRuntime from "@prisma/client/runtime/library";
+
+/*
 import {
   AIHubVoiceModel,
   TextToSpeech,
@@ -9,202 +14,53 @@ import {
   VoiceModelConfig,
   VoiceModelProfile,
 } from "@prisma/client";
+*/
+
+export type ModelName = Prisma.ModelName;
+// type PrismaModelName = ModelName;
+export type PrismaModelType<N extends ModelName = ModelName> = Prisma.TypeMap["model"][N];
+export type PrismaModelPayload<N extends ModelName = ModelName> = PrismaModelType<N>["payload"];
+export type PrismaModel<N extends ModelName = ModelName> =
+  PrismaRuntime.Types.Result.DefaultSelection<PrismaModelPayload<N>>;
 
 export const PAGE_LIMIT = 100;
 
 export function createLoaders() {
   return {
-    // TODO: Make these use the same query functions instead of having their own
-    aiHubVoiceModel: new DataLoader<string, AIHubVoiceModel | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("AIHubVoiceModel")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading AIHubVoiceModel:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    aiHubVoiceModelUsingChecksumMD5ForWeights: new DataLoader<string, AIHubVoiceModel | null>(
-      (keys) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("AIHubVoiceModel")
-              .selectAll()
-              .where("checksumMD5ForWeights", "in", keys)
-              .execute();
-
-            resolve(
-              keys.map((key) => rows.find((row) => row.checksumMD5ForWeights === key) || null)
-            );
-          } catch (error) {
-            console.error("Error loading AIHubVoiceModel:", error);
-            resolve(keys.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    voiceModelBackupUrl: new DataLoader<string, VoiceModelBackupUrl | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModelBackupUrl")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading voiceModelBackupUrl:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    voiceModel: new DataLoader<string, VoiceModel | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModel")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading voiceModel:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    voiceModelConfig: new DataLoader<string, VoiceModelConfig | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModelConfig")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading voiceModelConfig:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    textToSpeech: new DataLoader<string, TextToSpeech | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("TextToSpeech")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading TextToSpeech:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    voiceModelProfile: new DataLoader<string, VoiceModelProfile | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModelProfile")
-              .selectAll()
-              .where("id", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.id === id) || null));
-          } catch (error) {
-            console.error("Error loading VoiceModelProfile:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    userUsingAccessKey: new DataLoader<string, User | null>(
-      (keys) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("User")
-              .selectAll()
-              .where("accessKey", "in", keys)
-              .execute();
-
-            resolve(keys.map((key) => rows.find((row) => row.accessKey === key) || null));
-          } catch (error) {
-            console.error("Error loading User:", error);
-            resolve(keys.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-
+    aiHubVoiceModel: createLoader("AIHubVoiceModel", "id"),
+    aiHubVoiceModelUsingChecksumMD5ForWeights: createLoader("AIHubVoiceModel", "checksumMD5ForWeights"),
+    voiceModelBackupUrl: createLoader("VoiceModelBackupUrl", "id"),
+    voiceModel: createLoader("VoiceModel", "id"),
+    voiceModelConfig: createLoader("VoiceModelConfig", "id"),
+    textToSpeech: createLoader("TextToSpeech", "id"),
+    voiceModelProfile: createLoader("VoiceModelProfile", "id"),
+    userUsingAccessKey: createLoader("User", "accessKey"),
     // 1 to 1 relation loaders
-    modelConfigFromVoiceModel: new DataLoader<string, VoiceModelConfig | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModelConfig")
-              .selectAll()
-              .where("voiceModelId", "in", ids)
-              .execute();
+    modelConfigFromVoiceModel: createLoader("VoiceModelConfig", "voiceModelId"),
+    sourceModelFromVoiceModel: createLoader("AIHubVoiceModel", "derivedModelId"),
+    profileFromAIHubVoiceModel: createLoader("VoiceModelProfile", "voiceModelId"),
+  }
+}
 
-            resolve(ids.map((id) => rows.find((row) => row.voiceModelId === id) || null));
-          } catch (error) {
-            console.error("Error loading VoiceModelConfig:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    sourceModelFromVoiceModel: new DataLoader<string, AIHubVoiceModel | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("AIHubVoiceModel")
-              .selectAll()
-              .where("derivedModelId", "in", ids)
-              .execute();
+function createLoader<T1 extends keyof DB & string, T2 extends PrismaModel<T1>>(
+  tableName: T1,
+  columnName: keyof DB[T1]
+) {
+  return new DataLoader<string, T2 | null>(
+    (keys) =>
+      new Promise(async (resolve) => {
+        try {
+          const rows: any = await db
+            .selectFrom(tableName)
+            .selectAll()
+            .where(columnName as any, "in", keys)
+            .execute();
 
-            resolve(ids.map((id) => rows.find((row) => row.derivedModelId === id) || null));
-          } catch (error) {
-            console.error("Error loading AIHubVoiceModel:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-    profileFromAIHubVoiceModel: new DataLoader<string, VoiceModelProfile | null>(
-      (ids) =>
-        new Promise(async (resolve) => {
-          try {
-            const rows = await db
-              .selectFrom("VoiceModelProfile")
-              .selectAll()
-              .where("voiceModelId", "in", ids)
-              .execute();
-
-            resolve(ids.map((id) => rows.find((row) => row.voiceModelId === id) || null));
-          } catch (error) {
-            console.error("Error loading VoiceModelProfile:", error);
-            resolve(ids.map(() => null)); // Resolve with nulls in case of error
-          }
-        })
-    ),
-  };
+          resolve(keys.map((key) => rows.find((row: any) => row[columnName] === key) || null));
+        } catch (error) {
+          console.error(`Error loading for ${tableName}:`, error);
+          resolve(keys.map(() => null)); // Resolve with nulls in case of error
+        }
+      })
+  );
 }
