@@ -12,7 +12,6 @@ const POSTGRES_PW = process.env.POSTGRES_PW;
 const POSTGRES_PORT = parseInt(process.env.POSTGRES_PORT!);
 const POSTGRES_SERVICE_NAME = process.env.POSTGRES_SERVICE_NAME;
 
-
 const dialect = new PostgresDialect({
   pool: new pg.Pool({
     database: POSTGRES_DB,
@@ -28,12 +27,17 @@ export const db = new Kysely<DB>({
   dialect,
 });
 
+type MakeNullablePropertiesOptional<T> = {
+  [P in keyof T as null extends T[P] ? P : never]?: Exclude<T[P], null> | null | undefined;
+} & {
+  [P in keyof T as null extends T[P] ? never : P]: T[P];
+};
+
 export async function create<T1 extends keyof DB & string, T2 extends PrismaModel<T1>>(
   tableName: T1,
   context: Context,
-  input: Omit<
-    T2,
-    "id" | "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+  input: MakeNullablePropertiesOptional<
+    Omit<T2, "id" | "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted">
   >
 ) {
   // const me = context.me;
@@ -72,7 +76,7 @@ export async function update<T1 extends keyof DB & string, T2 extends PrismaMode
   context: Context,
   input: Partial<
     Omit<T2, "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted">
-  > 
+  >
 ) {
   // const me = context.me;
   // if (!me) {
