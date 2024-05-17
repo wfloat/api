@@ -102,6 +102,12 @@ model VoiceModel {
   // character                Character?            @relation(fields: [characterId], references: [id], name: "2")
   sourceModel    AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
   textToSpeeches TextToSpeech[]   @relation("VoiceModelTextToSpeeches")
+
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }
 
 // or "ModelParams"

@@ -37,6 +37,11 @@ export type VoiceModel = {
     checksumMD5ForWeights: string;
     checksumSHA256ForAdded: string;
     checksumSHA256ForWeights: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type VoiceModelBackupUrl = {
     id: Generated<string>;

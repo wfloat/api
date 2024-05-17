@@ -40,18 +40,18 @@ export async function create<T1 extends keyof DB & string, T2 extends PrismaMode
     Omit<T2, "id" | "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted">
   >
 ) {
-  // const me = context.me;
-  // if (!me) {
-  //   throw Error(`User sesssion not established.`);
-  // }
+  const me = context.me;
+  if (!me) {
+    throw Error(`User sesssion not established.`);
+  }
 
   const inputAny = input as any;
   inputAny.id = undefined;
-  // inputAny.createdDate = new Date();
-  // inputAny.updatedDate = new Date();
-  // inputAny.createdById = me.id;
-  // inputAny.updatedById = me.id;
-  // inputAny.isDeleted = false;
+  inputAny.createdDate = new Date();
+  inputAny.updatedDate = new Date();
+  inputAny.createdById = me.id;
+  inputAny.updatedById = me.id;
+  inputAny.isDeleted = false;
 
   const result = await db
     .insertInto(tableName)
@@ -77,14 +77,14 @@ export async function update<T1 extends keyof DB & string, T2 extends PrismaMode
     Omit<T2, "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted">
   >
 ) {
-  // const me = context.me;
-  // if (!me) {
-  //   throw Error(`User sesssion not established.`);
-  // }
+  const me = context.me;
+  if (!me) {
+    throw Error(`User sesssion not established.`);
+  }
 
   const inputAny = input as any;
-  // inputAny.updatedDate = new Date();
-  // inputAny.updatedById = me.id;
+  inputAny.updatedDate = new Date();
+  inputAny.updatedById = me.id;
 
   const id = inputAny.id;
   inputAny.id = undefined;

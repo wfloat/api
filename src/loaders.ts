@@ -67,3 +67,4 @@ function createLoader<T1 extends keyof DB & string, T2 extends PrismaModel<T1>>(
       })
   );
 }
+
