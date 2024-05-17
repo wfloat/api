@@ -13,9 +13,9 @@ builder.queryFields((t) => ({
     resolve: async (query, root, args, context, info) => {
       let result: AIHubVoiceModel | null;
       if (args.id) {
-        result = await context.loaders.aiHubVoiceModel.load(args.id);
+        result = await context.loaders.AIHubVoiceModel.load(args.id);
       } else if (args.checksumMD5ForWeights) {
-        result = await context.loaders.aiHubVoiceModelUsingChecksumMD5ForWeights.load(
+        result = await context.loaders.AIHubVoiceModelUsingChecksumMD5ForWeights.load(
           args.checksumMD5ForWeights
         );
       } else {
@@ -39,7 +39,7 @@ builder.queryFields((t) => ({
         let cursor = query.cursor?.id;
         let cursorRow: AIHubVoiceModel | null = null;
         if (cursor) {
-          cursorRow = await context.loaders.aiHubVoiceModel.load(cursor);
+          cursorRow = await context.loaders.AIHubVoiceModel.load(cursor);
           // TODO: Error handle if cursorRow not found
         }
 
@@ -76,7 +76,7 @@ builder.queryFields((t) => ({
           .execute();
 
         let ids = result.map((row) => row.id);
-        let rows = await Promise.all(ids.map((id) => context.loaders.aiHubVoiceModel.load(id)));
+        let rows = await Promise.all(ids.map((id) => context.loaders.AIHubVoiceModel.load(id)));
 
         if (rows.some((item) => item === null)) {
           throw new Error(

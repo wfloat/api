@@ -59,10 +59,9 @@ export async function create<T1 extends keyof DB & string, T2 extends PrismaMode
     .returning(["id"])
     .executeTakeFirstOrThrow();
 
-  const tableNameCamelCase = (tableName.charAt(0).toLowerCase() +
-    tableName.slice(1)) as keyof ReturnType<typeof createLoaders>;
+  const loaderName = tableName as keyof ReturnType<typeof createLoaders>;
 
-  const row = (await context.loaders[tableNameCamelCase].load(result.id)) as T2;
+  const row = (await context.loaders[loaderName].load(result.id)) as T2;
 
   if (!row) {
     throw Error(`Failed to create new ${tableName}.`);
@@ -96,10 +95,9 @@ export async function update<T1 extends keyof DB & string, T2 extends PrismaMode
     .where("id", "=", id)
     .executeTakeFirstOrThrow();
 
-  const tableNameCamelCase = (tableName.charAt(0).toLowerCase() +
-    tableName.slice(1)) as keyof ReturnType<typeof createLoaders>;
+  const loaderName = tableName as keyof ReturnType<typeof createLoaders>;
 
-  const row = (await context.loaders[tableNameCamelCase].load(id)) as T2;
+  const row = (await context.loaders[loaderName].load(id)) as T2;
 
   if (!row) {
     throw Error(`${tableName} not found with id: ${id}.`);

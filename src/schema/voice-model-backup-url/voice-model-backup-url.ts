@@ -11,7 +11,7 @@ builder.prismaObject("VoiceModelBackupUrl", {
     // Relations
     voiceModel: t.relation("voiceModel", {
       resolve: async (query, root, args, context, info) => {
-        const result = await context.loaders.aiHubVoiceModel.load(root.voiceModelId);
+        const result = await context.loaders.AIHubVoiceModel.load(root.voiceModelId);
         return result as NonNullable<typeof result>;
       },
     }),

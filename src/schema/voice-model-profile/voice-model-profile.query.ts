@@ -10,7 +10,7 @@ builder.queryFields((t) => ({
       id: t.arg.id({ required: true }),
     },
     resolve: async (query, root, args, context, info) => {
-      const result = await context.loaders.voiceModelProfile.load(args.id);
+      const result = await context.loaders.VoiceModelProfile.load(args.id);
       return result as NonNullable<typeof result>;
     },
   }),
@@ -26,7 +26,7 @@ builder.queryFields((t) => ({
         let cursor = query.cursor?.id;
         let cursorRow: VoiceModelProfile | null = null;
         if (cursor) {
-          cursorRow = await context.loaders.voiceModelProfile.load(cursor);
+          cursorRow = await context.loaders.VoiceModelProfile.load(cursor);
           // TODO: Error handle if cursorRow not found
         }
 
@@ -63,7 +63,7 @@ builder.queryFields((t) => ({
           .execute();
 
         let ids = result.map((row) => row.id);
-        let rows = await Promise.all(ids.map((id) => context.loaders.voiceModelProfile.load(id)));
+        let rows = await Promise.all(ids.map((id) => context.loaders.VoiceModelProfile.load(id)));
 
         if (rows.some((item) => item === null)) {
           throw new Error(

@@ -27,19 +27,22 @@ export const PAGE_LIMIT = 100;
 
 export function createLoaders() {
   return {
-    aiHubVoiceModel: createLoader("AIHubVoiceModel", "id"),
-    aiHubVoiceModelUsingChecksumMD5ForWeights: createLoader("AIHubVoiceModel", "checksumMD5ForWeights"),
-    voiceModelBackupUrl: createLoader("VoiceModelBackupUrl", "id"),
-    voiceModel: createLoader("VoiceModel", "id"),
-    voiceModelConfig: createLoader("VoiceModelConfig", "id"),
-    textToSpeech: createLoader("TextToSpeech", "id"),
-    voiceModelProfile: createLoader("VoiceModelProfile", "id"),
-    userUsingAccessKey: createLoader("User", "accessKey"),
+    AIHubVoiceModel: createLoader("AIHubVoiceModel", "id"),
+    AIHubVoiceModelUsingChecksumMD5ForWeights: createLoader(
+      "AIHubVoiceModel",
+      "checksumMD5ForWeights"
+    ),
+    VoiceModelBackupUrl: createLoader("VoiceModelBackupUrl", "id"),
+    VoiceModel: createLoader("VoiceModel", "id"),
+    VoiceModelConfig: createLoader("VoiceModelConfig", "id"),
+    TextToSpeech: createLoader("TextToSpeech", "id"),
+    VoiceModelProfile: createLoader("VoiceModelProfile", "id"),
+    UserUsingAccessKey: createLoader("User", "accessKey"),
     // 1 to 1 relation loaders
-    modelConfigFromVoiceModel: createLoader("VoiceModelConfig", "voiceModelId"),
-    sourceModelFromVoiceModel: createLoader("AIHubVoiceModel", "derivedModelId"),
-    profileFromAIHubVoiceModel: createLoader("VoiceModelProfile", "voiceModelId"),
-  }
+    ModelConfigFromVoiceModel: createLoader("VoiceModelConfig", "voiceModelId"),
+    SourceModelFromVoiceModel: createLoader("AIHubVoiceModel", "derivedModelId"),
+    ProfileFromAIHubVoiceModel: createLoader("VoiceModelProfile", "voiceModelId"),
+  };
 }
 
 function createLoader<T1 extends keyof DB & string, T2 extends PrismaModel<T1>>(

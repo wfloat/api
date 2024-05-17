@@ -20,12 +20,12 @@ builder.prismaObject("VoiceModel", {
     modelConfig: t.relation("modelConfig", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
-        await context.loaders.modelConfigFromVoiceModel.load(root.id),
+        await context.loaders.ModelConfigFromVoiceModel.load(root.id),
     }),
     sourceModel: t.relation("sourceModel", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
-        await context.loaders.sourceModelFromVoiceModel.load(root.id),
+        await context.loaders.SourceModelFromVoiceModel.load(root.id),
     }),
 
     // // Connections

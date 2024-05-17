@@ -21,12 +21,12 @@ builder.prismaObject("AIHubVoiceModel", {
     derivedModel: t.relation("derivedModel", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
-        root.derivedModelId ? await context.loaders.voiceModel.load(root.derivedModelId) : null,
+        root.derivedModelId ? await context.loaders.VoiceModel.load(root.derivedModelId) : null,
     }),
     inferredProfile: t.relation("inferredProfile", {
       nullable: true,
       resolve: async (query, root, args, context, info) =>
-        await context.loaders.profileFromAIHubVoiceModel.load(root.id),
+        await context.loaders.ProfileFromAIHubVoiceModel.load(root.id),
     }),
 
     // Connections
@@ -42,7 +42,7 @@ builder.prismaObject("AIHubVoiceModel", {
           let cursor = query.cursor?.id;
           let cursorRow: VoiceModelBackupUrl | null = null;
           if (cursor) {
-            cursorRow = await context.loaders.voiceModelBackupUrl.load(cursor);
+            cursorRow = await context.loaders.VoiceModelBackupUrl.load(cursor);
             // TODO: Error handle if cursorRow not found
           }
 
@@ -82,7 +82,7 @@ builder.prismaObject("AIHubVoiceModel", {
 
           let ids = result.map((row) => row.id);
           let rows = await Promise.all(
-            ids.map((id) => context.loaders.voiceModelBackupUrl.load(id))
+            ids.map((id) => context.loaders.VoiceModelBackupUrl.load(id))
           );
 
           if (rows.some((item) => item === null)) {
