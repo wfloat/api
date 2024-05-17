@@ -11,17 +11,20 @@ const server = new ApolloServer({
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
   context: async ({ req, res }): Promise<Context> => {
-    const authorizationHeader = req.headers["authorization"] || "";
-    if (!authorizationHeader) {
-      throw Error("Authorization header not provided.");
-    }
+    // TODO: Uncomment auth logic
+    // const authorizationHeader = req.headers["authorization"] || "";
+    // if (!authorizationHeader) {
+    //   throw Error("Authorization header not provided.");
+    // }
 
     const myLoaders = createLoaders();
-    const me = await myLoaders.userUsingAccessKey.load(authorizationHeader);
+    // const me = await myLoaders.userUsingAccessKey.load(authorizationHeader);
 
-    if (!me) {
-      throw Error("Not authorized.");
-    }
+    // if (!me) {
+    //   throw Error("Not authorized.");
+    // }
+
+    const me = null;
 
     return {
       me: me,

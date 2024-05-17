@@ -1,5 +1,6 @@
+// import { create } from "domain";
 import { builder } from "../../builder.js";
-import { db } from "../../database.js";
+import { db, create, update } from "../../database.js";
 import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { AIHubVoiceModel } from "@prisma/client";
 
@@ -28,14 +29,7 @@ builder.mutationField("createAIHubVoiceModel", (t) =>
       input: t.arg({ type: CreateAIHubVoiceModelInput, required: true }),
     },
     resolve: async (query, parent, args, context, info) => {
-      const result = await db
-        .insertInto("AIHubVoiceModel")
-        .values(args.input)
-        .returning(["id"])
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.aiHubVoiceModel.load(result.id);
-      return row as NonNullable<typeof row>;
+      return await create("AIHubVoiceModel", context, args.input);
     },
   })
 );
@@ -82,16 +76,7 @@ builder.mutationField("updateAIHubVoiceModel", (t) =>
         { ...args.input },
         AIHubVoiceModelNullability
       );
-      input.id = undefined;
-
-      const result = await db
-        .updateTable("AIHubVoiceModel")
-        .set(input)
-        .where("id", "=", args.input.id)
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.aiHubVoiceModel.load(args.input.id);
-      return row as NonNullable<typeof row>;
+      return await update("AIHubVoiceModel", context, input);
     },
   })
 );

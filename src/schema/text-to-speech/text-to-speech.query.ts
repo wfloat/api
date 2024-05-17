@@ -7,7 +7,7 @@ builder.queryFields((t) => ({
       id: t.arg.id({ required: true }),
     },
     resolve: async (query, root, args, context, info) => {
-      const result = await context.loaders.textToSpeech.load(args.id);
+      const result = await context.loaders.TextToSpeech.load(args.id);
       return result as NonNullable<typeof result>;
     },
   }),

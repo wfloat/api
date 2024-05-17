@@ -1,5 +1,5 @@
 import { builder } from "../../builder.js";
-// import "./text-to-speech.query.js";
+import "./text-to-speech.query.js";
 import "./text-to-speech.mutation.js";
 
 builder.prismaObject("TextToSpeech", {
@@ -13,7 +13,7 @@ builder.prismaObject("TextToSpeech", {
     // Relations
     voiceModel: t.relation("voiceModel", {
       resolve: async (query, root, args, context, info) => {
-        const result = await context.loaders.voiceModel.load(root.voiceModelId);
+        const result = await context.loaders.VoiceModel.load(root.voiceModelId);
         return result as NonNullable<typeof result>;
       },
     }),

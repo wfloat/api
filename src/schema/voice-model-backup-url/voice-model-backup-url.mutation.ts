@@ -1,5 +1,5 @@
 import { builder } from "../../builder.js";
-import { db } from "../../database.js";
+import { db, create, update } from "../../database.js";
 import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { VoiceModelBackupUrl } from "@prisma/client";
 
@@ -23,14 +23,7 @@ builder.mutationField("createVoiceModelBackupUrl", (t) =>
       input: t.arg({ type: CreateVoiceModelBackupUrlInput, required: true }),
     },
     resolve: async (query, parent, args, context, info) => {
-      const result = await db
-        .insertInto("VoiceModelBackupUrl")
-        .values(args.input)
-        .returning(["id"])
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.voiceModelBackupUrl.load(result.id);
-      return row as NonNullable<typeof row>;
+      return await create("VoiceModelBackupUrl", context, args.input);
     },
   })
 );
@@ -67,16 +60,7 @@ builder.mutationField("updateVoiceModelBackupUrl", (t) =>
         { ...args.input },
         VoiceModelBackupUrlNullability
       );
-      input.id = undefined;
-
-      const result = await db
-        .updateTable("VoiceModelBackupUrl")
-        .set(input)
-        .where("id", "=", args.input.id)
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.voiceModelBackupUrl.load(args.input.id);
-      return row as NonNullable<typeof row>;
+      return await update("VoiceModelBackupUrl", context, input);
     },
   })
 );

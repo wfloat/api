@@ -10,7 +10,7 @@ builder.queryFields((t) => ({
       id: t.arg.id({ required: true }),
     },
     resolve: async (query, root, args, context, info) => {
-      const result = await context.loaders.voiceModelBackupUrl.load(args.id);
+      const result = await context.loaders.VoiceModelBackupUrl.load(args.id);
       return result as NonNullable<typeof result>;
     },
   }),
@@ -37,7 +37,7 @@ builder.queryFields((t) => ({
 
         let ids = result.map((row) => row.id);
 
-        let rows = await Promise.all(ids.map((id) => context.loaders.voiceModelBackupUrl.load(id)));
+        let rows = await Promise.all(ids.map((id) => context.loaders.VoiceModelBackupUrl.load(id)));
         if (rows.some((item) => item === null)) {
           throw new Error(
             "One or more records returned by the loader are either null or instanceof Error."

@@ -1,5 +1,10 @@
 FROM node:18.17
 
+RUN apt-get update -y && \
+    apt-get install -y sudo postgresql-client curl build-essential git inotify-tools libstdc++6 openssl libncurses5 locales ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*_*
+
 USER node
 
 WORKDIR /usr/src/api

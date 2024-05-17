@@ -1,5 +1,5 @@
 import { builder } from "../../builder.js";
-import { db } from "../../database.js";
+import { db, create, update } from "../../database.js";
 import { removeNullFieldsThatAreNonNullable } from "../../helpers.js";
 import { VoiceModelConfig } from "@prisma/client";
 
@@ -31,14 +31,7 @@ builder.mutationField("createVoiceModelConfig", (t) =>
       input: t.arg({ type: CreateVoiceModelConfigInput, required: true }),
     },
     resolve: async (query, parent, args, context, info) => {
-      const result = await db
-        .insertInto("VoiceModelConfig")
-        .values(args.input)
-        .returning(["id"])
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.voiceModelConfig.load(result.id);
-      return row as NonNullable<typeof row>;
+      return await create("VoiceModelConfig", context, args.input);
     },
   })
 );
@@ -91,16 +84,7 @@ builder.mutationField("updateVoiceModelConfig", (t) =>
         { ...args.input },
         VoiceModelConfigNullability
       );
-      input.id = undefined;
-
-      const result = await db
-        .updateTable("VoiceModelConfig")
-        .set(input)
-        .where("id", "=", args.input.id)
-        .executeTakeFirstOrThrow();
-
-      const row = await context.loaders.voiceModelConfig.load(args.input.id);
-      return row as NonNullable<typeof row>;
+      return await update("VoiceModelConfig", context, input);
     },
   })
 );
