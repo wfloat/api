@@ -11,12 +11,20 @@ export default interface PrismaTypes {
         Where: Prisma.UserWhereInput;
         Create: {};
         Update: {};
-        RelationName: "textToSpeeches";
-        ListRelations: "textToSpeeches";
+        RelationName: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated";
+        ListRelations: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated";
         Relations: {
             textToSpeeches: {
                 Shape: TextToSpeech[];
                 Name: "TextToSpeech";
+            };
+            voiceModelsCreated: {
+                Shape: VoiceModel[];
+                Name: "VoiceModel";
+            };
+            voiceModelsUpdated: {
+                Shape: VoiceModel[];
+                Name: "VoiceModel";
             };
         };
     };
@@ -30,7 +38,7 @@ export default interface PrismaTypes {
         Where: Prisma.VoiceModelWhereInput;
         Create: {};
         Update: {};
-        RelationName: "modelConfig" | "sourceModel" | "textToSpeeches";
+        RelationName: "modelConfig" | "sourceModel" | "textToSpeeches" | "createdBy" | "updatedBy";
         ListRelations: "textToSpeeches";
         Relations: {
             modelConfig: {
@@ -44,6 +52,14 @@ export default interface PrismaTypes {
             textToSpeeches: {
                 Shape: TextToSpeech[];
                 Name: "TextToSpeech";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
             };
         };
     };

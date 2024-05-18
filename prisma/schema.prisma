@@ -19,74 +19,18 @@ generator kysely {
   fileName = "kysely.d.ts"
 }
 
-// model Character {
-//   id      String  @id
-//   photo   String?
-//   name    String
-//   ownerId String
-//   owner   User    @relation(fields: [ownerId], references: [id], name: "3")
-//   voices  Voice[] @relation("0")
-// }
-
-// // or VoiceModel
-// model Voice {
-//   id           String      @id
-//   photo        String?
-//   quality      Float
-//   userScore    Float
-//   characterId  String
-//   AIHubModelId String?
-//   parentId     String?
-//   ownerId      String
-//   chracter     Character   @relation(fields: [characterId], references: [id], name: "0")
-//   source       AIHubModel? @relation(fields: [AIHubModelId], references: [id], name: "1")
-//   parent       Voice?      @relation(fields: [parentId], references: [id], name: "2")
-//   owner        User        @relation(fields: [ownerId], references: [id], name: "4")
-//   children     Voice[]     @relation("2")
-// }
-
-// model AIHubModel {
-//   id            String  @id
-//   downloadUrl   String
-//   DownloadCount Int
-//   displayName   String?
-//   filename      String
-//   Filesize      Int // Bytes
-//   sheetId       String // Unique MD5 id for the realtime rvc stats sheet
-//   version       String // Must be "RVC v2" or "RVC v1"
-//   credit        String
-//   voice         Voice[] @relation("1")
-//   // TODO: Figure out what to do with alternate URLs
-// }
-
-// model Character {}
-
-// model Human {}
-
-// model VoiceModel {
-
-// }
-
-// model Character {
-//   id             String  @id
-//   name           String
-//   fictional      Boolean
-//   genre
-//   sourceMaterial
-
-//   voiceModels VoiceModel[] @relation("2")
-// }
-
 model User {
   id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   accessKey      String         @unique
   name           String
   textToSpeeches TextToSpeech[] @relation("UserTextToSpeeches")
+
+  voiceModelsCreated VoiceModel[] @relation("VoiceModelCreatedBy")
+  voiceModelsUpdated VoiceModel[] @relation("VoiceModelUpdatedBy")
 }
 
 model VoiceModel {
   id                       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  // type                     String // RVC v1 | RVC v2
   filesizeForWeights       Int // Bytes
   filesizeForAdded         Int // Bytes
   hidden                   Boolean
@@ -96,13 +40,12 @@ model VoiceModel {
   checksumMD5ForWeights    String            @unique
   checksumSHA256ForAdded   String            @unique
   checksumSHA256ForWeights String            @unique
-  modelConfig              VoiceModelConfig? // ctx.loaders.modelConfigFromVoiceModel.load(id)
-  // characterId              String?
+  modelConfig              VoiceModelConfig?
+  sourceModel              AIHubVoiceModel?
+  textToSpeeches           TextToSpeech[]    @relation("VoiceModelTextToSpeeches")
 
-  // character                Character?            @relation(fields: [characterId], references: [id], name: "2")
-  sourceModel    AIHubVoiceModel? // ctx.loaders.derivedModelFromVoiceModelAIHub.load(id)
-  textToSpeeches TextToSpeech[]   @relation("VoiceModelTextToSpeeches")
-
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "VoiceModelCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "VoiceModelUpdatedBy")
   createdDate DateTime?
   updatedDate DateTime?
   createdById String?   @db.Uuid
@@ -110,7 +53,6 @@ model VoiceModel {
   isDeleted   Boolean?
 }
 
-// or "ModelParams"
 model VoiceModelConfig {
   id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   qualityScore          Float
@@ -123,7 +65,7 @@ model VoiceModelConfig {
   volumeEnvelopeScaling Float
   artifactProtection    Float
   voiceModelId          String     @unique @db.Uuid
-  voiceModel            VoiceModel @relation(fields: [voiceModelId], references: [id]) // ctx.loaders.voiceModel.load(voiceModelId)
+  voiceModel            VoiceModel @relation(fields: [voiceModelId], references: [id])
 }
 
 model AIHubVoiceModel {
@@ -135,7 +77,7 @@ model AIHubVoiceModel {
   creatorText           String?
   version               String // RVC v2 | RVC v1
   derivedModelId        String?               @unique @db.Uuid
-  derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id]) // ctx.loaders.voiceModelAIHub.load(sourceModelId)  
+  derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id])
   backupUrls            VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
   inferredProfile       VoiceModelProfile?    @relation("AIHubVoiceModelProfile")
 }
@@ -154,8 +96,6 @@ model VoiceModelProfile {
   voiceModel                       AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelProfile")
 }
 
-// VoiceModelAIHubBackupUrlsConnection
-
 model VoiceModelBackupUrl {
   id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   url          String          @unique
@@ -163,7 +103,6 @@ model VoiceModelBackupUrl {
   voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelBackupUrls")
 }
 
-// Or just "Speech"
 model TextToSpeech {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inputText    String
