@@ -27,6 +27,21 @@ model User {
 
   voiceModelsCreated VoiceModel[] @relation("VoiceModelCreatedBy")
   voiceModelsUpdated VoiceModel[] @relation("VoiceModelUpdatedBy")
+
+  voiceModelsConfigCreated VoiceModelConfig[] @relation("VoiceModelConfigCreatedBy")
+  voiceModelsConfigUpdated VoiceModelConfig[] @relation("VoiceModelConfigUpdatedBy")
+
+  aIHubVoiceModelCreated AIHubVoiceModel[] @relation("AIHubVoiceModelCreatedBy")
+  aIHubVoiceModelUpdated AIHubVoiceModel[] @relation("AIHubVoiceModelUpdatedBy")
+
+  voiceModelProfileCreated VoiceModelProfile[] @relation("VoiceModelProfileCreatedBy")
+  voiceModelProfileUpdated VoiceModelProfile[] @relation("VoiceModelProfileUpdatedBy")
+
+  voiceModelBackupUrlCreated VoiceModelBackupUrl[] @relation("VoiceModelBackupUrlCreatedBy")
+  voiceModelBackupUrlUpdated VoiceModelBackupUrl[] @relation("VoiceModelBackupUrlUpdatedBy")
+
+  textToSpeechCreated TextToSpeech[] @relation("TextToSpeechCreatedBy")
+  textToSpeechUpdated TextToSpeech[] @relation("TextToSpeechUpdatedBy")
 }
 
 model VoiceModel {
@@ -66,6 +81,14 @@ model VoiceModelConfig {
   artifactProtection    Float
   voiceModelId          String     @unique @db.Uuid
   voiceModel            VoiceModel @relation(fields: [voiceModelId], references: [id])
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "VoiceModelConfigCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "VoiceModelConfigUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }
 
 model AIHubVoiceModel {
@@ -80,6 +103,14 @@ model AIHubVoiceModel {
   derivedModel          VoiceModel?           @relation(fields: [derivedModelId], references: [id])
   backupUrls            VoiceModelBackupUrl[] @relation("AIHubVoiceModelBackupUrls")
   inferredProfile       VoiceModelProfile?    @relation("AIHubVoiceModelProfile")
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "AIHubVoiceModelCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "AIHubVoiceModelUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }
 
 model VoiceModelProfile {
@@ -94,6 +125,14 @@ model VoiceModelProfile {
   modelTrainedOnEnglishProbability Float
   voiceModelId                     String          @unique @db.Uuid
   voiceModel                       AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelProfile")
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "VoiceModelProfileCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "VoiceModelProfileUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }
 
 model VoiceModelBackupUrl {
@@ -101,6 +140,14 @@ model VoiceModelBackupUrl {
   url          String          @unique
   voiceModelId String          @db.Uuid
   voiceModel   AIHubVoiceModel @relation(fields: [voiceModelId], references: [id], name: "AIHubVoiceModelBackupUrls")
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "VoiceModelBackupUrlCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "VoiceModelBackupUrlUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }
 
 model TextToSpeech {
@@ -111,4 +158,12 @@ model TextToSpeech {
   userId       String     @db.Uuid
   voiceModel   VoiceModel @relation(fields: [voiceModelId], references: [id], name: "VoiceModelTextToSpeeches")
   user         User       @relation(fields: [userId], references: [id], name: "UserTextToSpeeches")
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "TextToSpeechCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "TextToSpeechUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
 }

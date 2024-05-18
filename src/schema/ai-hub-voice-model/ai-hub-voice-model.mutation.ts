@@ -62,6 +62,12 @@ const AIHubVoiceModelNullability: { [K in keyof AIHubVoiceModel]: boolean } = {
   version: false,
   derivedModelId: true,
   checksumMD5ForWeights: false,
+  // Add more fields
+  createdById: false,
+  createdDate: false,
+  updatedById: false,
+  updatedDate: false,
+  isDeleted: false,
 };
 
 builder.mutationField("updateAIHubVoiceModel", (t) =>

@@ -16,6 +16,16 @@ builder.prismaObject("VoiceModelConfig", {
     volumeEnvelopeScaling: t.exposeFloat("volumeEnvelopeScaling"),
     artifactProtection: t.exposeFloat("artifactProtection"),
     voiceModelId: t.exposeID("voiceModelId"),
+    createdDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.createdDate,
+    }),
+    updatedDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.updatedDate,
+    }),
 
     // Relations
     voiceModel: t.relation("voiceModel", {

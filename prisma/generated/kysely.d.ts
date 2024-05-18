@@ -13,6 +13,11 @@ export type AIHubVoiceModel = {
     creatorText: string | null;
     version: string;
     derivedModelId: string | null;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type TextToSpeech = {
     id: Generated<string>;
@@ -20,6 +25,11 @@ export type TextToSpeech = {
     outputUrl: string;
     voiceModelId: string;
     userId: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type User = {
     id: Generated<string>;
@@ -47,6 +57,11 @@ export type VoiceModelBackupUrl = {
     id: Generated<string>;
     url: string;
     voiceModelId: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type VoiceModelConfig = {
     id: Generated<string>;
@@ -60,6 +75,11 @@ export type VoiceModelConfig = {
     volumeEnvelopeScaling: number;
     artifactProtection: number;
     voiceModelId: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type VoiceModelProfile = {
     id: Generated<string>;
@@ -72,6 +92,11 @@ export type VoiceModelProfile = {
     nativeLanguage: string;
     modelTrainedOnEnglishProbability: number;
     voiceModelId: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type DB = {
     AIHubVoiceModel: AIHubVoiceModel;

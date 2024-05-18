@@ -9,6 +9,16 @@ builder.prismaObject("TextToSpeech", {
     inputText: t.exposeString("inputText"),
     outputUrl: t.exposeString("outputUrl"),
     voiceModelId: t.exposeID("voiceModelId"),
+    createdDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.createdDate,
+    }),
+    updatedDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.updatedDate,
+    }),
 
     // Relations
     voiceModel: t.relation("voiceModel", {

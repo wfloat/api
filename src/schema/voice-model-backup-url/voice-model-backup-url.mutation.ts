@@ -46,6 +46,12 @@ const VoiceModelBackupUrlNullability: { [K in keyof VoiceModelBackupUrl]: boolea
   id: false,
   url: false,
   voiceModelId: false,
+  // Added
+  createdDate: false,
+  updatedDate: false,
+  createdById: false,
+  updatedById: false,
+  isDeleted: false
 };
 
 builder.mutationField("updateVoiceModelBackupUrl", (t) =>

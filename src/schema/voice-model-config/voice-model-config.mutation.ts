@@ -70,6 +70,12 @@ const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = 
   volumeEnvelopeScaling: false,
   artifactProtection: false,
   voiceModelId: false,
+  // Added
+  createdDate: false,
+  updatedDate: false,
+  createdById: false,
+  updatedById: false,
+  isDeleted: false
 };
 
 builder.mutationField("updateVoiceModelConfig", (t) =>

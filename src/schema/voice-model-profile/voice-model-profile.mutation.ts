@@ -67,6 +67,12 @@ const VoiceModelProfileNullability: { [K in keyof VoiceModelProfile]: boolean } 
   nativeLanguage: false,
   modelTrainedOnEnglishProbability: false,
   voiceModelId: false,
+  // Add these fields
+  createdDate: false,
+  updatedDate: false,
+  createdById: false,
+  updatedById: false,
+  isDeleted: false
 };
 
 builder.mutationField("updateVoiceModelProfile", (t) =>
