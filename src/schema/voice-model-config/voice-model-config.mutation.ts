@@ -58,7 +58,10 @@ UpdateVoiceModelConfigInput.implement({
 });
 type UpdateVoiceModelConfigInputShape = typeof UpdateVoiceModelConfigInput.$inferInput;
 
-const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = {
+const VoiceModelConfigNullability: { [K in keyof Omit<
+  VoiceModelConfig,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   qualityScore: false,
   f0Curve: false,

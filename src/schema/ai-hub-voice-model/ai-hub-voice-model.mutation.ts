@@ -53,7 +53,10 @@ UpdateAIHubVoiceModelInput.implement({
 });
 type UpdateAIHubVoiceModelInputShape = typeof UpdateAIHubVoiceModelInput.$inferInput;
 
-const AIHubVoiceModelNullability: { [K in keyof AIHubVoiceModel]: boolean } = {
+const AIHubVoiceModelNullability: { [K in keyof Omit<
+  AIHubVoiceModel,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   downloadCount: false,
   name: true,

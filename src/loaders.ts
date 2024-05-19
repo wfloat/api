@@ -38,6 +38,7 @@ export function createLoaders() {
     TextToSpeech: createLoader("TextToSpeech", "id"),
     VoiceModelProfile: createLoader("VoiceModelProfile", "id"),
     UserUsingAccessKey: createLoader("User", "accessKey"),
+    User: createLoader("User", "id"),
     // 1 to 1 relation loaders
     ModelConfigFromVoiceModel: createLoader("VoiceModelConfig", "voiceModelId"),
     SourceModelFromVoiceModel: createLoader("AIHubVoiceModel", "derivedModelId"),
@@ -67,3 +68,4 @@ function createLoader<T1 extends keyof DB & string, T2 extends PrismaModel<T1>>(
       })
   );
 }
+

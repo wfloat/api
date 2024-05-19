@@ -11,12 +11,76 @@ export default interface PrismaTypes {
         Where: Prisma.UserWhereInput;
         Create: {};
         Update: {};
-        RelationName: "textToSpeeches";
-        ListRelations: "textToSpeeches";
+        RelationName: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated" | "createdBy" | "updatedBy" | "userCreated" | "userUpdated";
+        ListRelations: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated" | "userCreated" | "userUpdated";
         Relations: {
             textToSpeeches: {
                 Shape: TextToSpeech[];
                 Name: "TextToSpeech";
+            };
+            voiceModelsCreated: {
+                Shape: VoiceModel[];
+                Name: "VoiceModel";
+            };
+            voiceModelsUpdated: {
+                Shape: VoiceModel[];
+                Name: "VoiceModel";
+            };
+            voiceModelsConfigCreated: {
+                Shape: VoiceModelConfig[];
+                Name: "VoiceModelConfig";
+            };
+            voiceModelsConfigUpdated: {
+                Shape: VoiceModelConfig[];
+                Name: "VoiceModelConfig";
+            };
+            aIHubVoiceModelCreated: {
+                Shape: AIHubVoiceModel[];
+                Name: "AIHubVoiceModel";
+            };
+            aIHubVoiceModelUpdated: {
+                Shape: AIHubVoiceModel[];
+                Name: "AIHubVoiceModel";
+            };
+            voiceModelProfileCreated: {
+                Shape: VoiceModelProfile[];
+                Name: "VoiceModelProfile";
+            };
+            voiceModelProfileUpdated: {
+                Shape: VoiceModelProfile[];
+                Name: "VoiceModelProfile";
+            };
+            voiceModelBackupUrlCreated: {
+                Shape: VoiceModelBackupUrl[];
+                Name: "VoiceModelBackupUrl";
+            };
+            voiceModelBackupUrlUpdated: {
+                Shape: VoiceModelBackupUrl[];
+                Name: "VoiceModelBackupUrl";
+            };
+            textToSpeechCreated: {
+                Shape: TextToSpeech[];
+                Name: "TextToSpeech";
+            };
+            textToSpeechUpdated: {
+                Shape: TextToSpeech[];
+                Name: "TextToSpeech";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            userCreated: {
+                Shape: User[];
+                Name: "User";
+            };
+            userUpdated: {
+                Shape: User[];
+                Name: "User";
             };
         };
     };
@@ -30,7 +94,7 @@ export default interface PrismaTypes {
         Where: Prisma.VoiceModelWhereInput;
         Create: {};
         Update: {};
-        RelationName: "modelConfig" | "sourceModel" | "textToSpeeches";
+        RelationName: "modelConfig" | "sourceModel" | "textToSpeeches" | "createdBy" | "updatedBy";
         ListRelations: "textToSpeeches";
         Relations: {
             modelConfig: {
@@ -45,6 +109,14 @@ export default interface PrismaTypes {
                 Shape: TextToSpeech[];
                 Name: "TextToSpeech";
             };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
+            };
         };
     };
     VoiceModelConfig: {
@@ -57,12 +129,20 @@ export default interface PrismaTypes {
         Where: Prisma.VoiceModelConfigWhereInput;
         Create: {};
         Update: {};
-        RelationName: "voiceModel";
+        RelationName: "voiceModel" | "createdBy" | "updatedBy";
         ListRelations: never;
         Relations: {
             voiceModel: {
                 Shape: VoiceModel;
                 Name: "VoiceModel";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
             };
         };
     };
@@ -76,7 +156,7 @@ export default interface PrismaTypes {
         Where: Prisma.AIHubVoiceModelWhereInput;
         Create: {};
         Update: {};
-        RelationName: "derivedModel" | "backupUrls" | "inferredProfile";
+        RelationName: "derivedModel" | "backupUrls" | "inferredProfile" | "createdBy" | "updatedBy";
         ListRelations: "backupUrls";
         Relations: {
             derivedModel: {
@@ -91,6 +171,14 @@ export default interface PrismaTypes {
                 Shape: VoiceModelProfile | null;
                 Name: "VoiceModelProfile";
             };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
+            };
         };
     };
     VoiceModelProfile: {
@@ -103,12 +191,20 @@ export default interface PrismaTypes {
         Where: Prisma.VoiceModelProfileWhereInput;
         Create: {};
         Update: {};
-        RelationName: "voiceModel";
+        RelationName: "voiceModel" | "createdBy" | "updatedBy";
         ListRelations: never;
         Relations: {
             voiceModel: {
                 Shape: AIHubVoiceModel;
                 Name: "AIHubVoiceModel";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
             };
         };
     };
@@ -122,12 +218,20 @@ export default interface PrismaTypes {
         Where: Prisma.VoiceModelBackupUrlWhereInput;
         Create: {};
         Update: {};
-        RelationName: "voiceModel";
+        RelationName: "voiceModel" | "createdBy" | "updatedBy";
         ListRelations: never;
         Relations: {
             voiceModel: {
                 Shape: AIHubVoiceModel;
                 Name: "AIHubVoiceModel";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
             };
         };
     };
@@ -141,7 +245,7 @@ export default interface PrismaTypes {
         Where: Prisma.TextToSpeechWhereInput;
         Create: {};
         Update: {};
-        RelationName: "voiceModel" | "user";
+        RelationName: "voiceModel" | "user" | "createdBy" | "updatedBy";
         ListRelations: never;
         Relations: {
             voiceModel: {
@@ -150,6 +254,14 @@ export default interface PrismaTypes {
             };
             user: {
                 Shape: User;
+                Name: "User";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
                 Name: "User";
             };
         };

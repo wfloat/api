@@ -15,6 +15,16 @@ builder.prismaObject("VoiceModel", {
     checksumSHA256ForWeights: t.exposeString("checksumSHA256ForWeights"),
     hidden: t.exposeBoolean("hidden"),
     processed: t.exposeBoolean("processed"),
+    createdDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.createdDate,
+    }),
+    updatedDate: t.field({
+      type: "Date",
+      nullable: true,
+      resolve: (parent) => parent.updatedDate,
+    }),
 
     // Relations
     modelConfig: t.relation("modelConfig", {
@@ -27,6 +37,19 @@ builder.prismaObject("VoiceModel", {
       resolve: async (query, root, args, context, info) =>
         await context.loaders.SourceModelFromVoiceModel.load(root.id),
     }),
+    createdBy: t.relation("createdBy", {
+      nullable: true,
+      resolve: async (query, root, args, context, info) =>
+        root.updatedById ? await context.loaders.User.load(root.updatedById) : null,
+      
+    }),
+    updatedBy: t.relation("updatedBy", {
+      nullable: true,
+      resolve: async (query, root, args, context, info) =>
+        root.updatedById ? await context.loaders.User.load(root.updatedById) : null,
+      
+    }),
+
 
     // // Connections
     // textToSpeeches: t.prismaConnection(

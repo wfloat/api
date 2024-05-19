@@ -56,7 +56,10 @@ UpdateVoiceModelProfileInput.implement({
 });
 type UpdateVoiceModelProfileInputShape = typeof UpdateVoiceModelProfileInput.$inferInput;
 
-const VoiceModelProfileNullability: { [K in keyof VoiceModelProfile]: boolean } = {
+const VoiceModelProfileNullability: { [K in keyof Omit<
+  VoiceModelProfile,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   confidence: false,
   fictional: false,
