@@ -11,8 +11,8 @@ export default interface PrismaTypes {
         Where: Prisma.UserWhereInput;
         Create: {};
         Update: {};
-        RelationName: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated";
-        ListRelations: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated";
+        RelationName: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated" | "createdBy" | "updatedBy" | "userCreated" | "userUpdated";
+        ListRelations: "textToSpeeches" | "voiceModelsCreated" | "voiceModelsUpdated" | "voiceModelsConfigCreated" | "voiceModelsConfigUpdated" | "aIHubVoiceModelCreated" | "aIHubVoiceModelUpdated" | "voiceModelProfileCreated" | "voiceModelProfileUpdated" | "voiceModelBackupUrlCreated" | "voiceModelBackupUrlUpdated" | "textToSpeechCreated" | "textToSpeechUpdated" | "userCreated" | "userUpdated";
         Relations: {
             textToSpeeches: {
                 Shape: TextToSpeech[];
@@ -65,6 +65,22 @@ export default interface PrismaTypes {
             textToSpeechUpdated: {
                 Shape: TextToSpeech[];
                 Name: "TextToSpeech";
+            };
+            createdBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            updatedBy: {
+                Shape: User | null;
+                Name: "User";
+            };
+            userCreated: {
+                Shape: User[];
+                Name: "User";
+            };
+            userUpdated: {
+                Shape: User[];
+                Name: "User";
             };
         };
     };

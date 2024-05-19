@@ -53,7 +53,10 @@ UpdateAIHubVoiceModelInput.implement({
 });
 type UpdateAIHubVoiceModelInputShape = typeof UpdateAIHubVoiceModelInput.$inferInput;
 
-const AIHubVoiceModelNullability: { [K in keyof AIHubVoiceModel]: boolean } = {
+const AIHubVoiceModelNullability: { [K in keyof Omit<
+  AIHubVoiceModel,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   downloadCount: false,
   name: true,
@@ -62,12 +65,6 @@ const AIHubVoiceModelNullability: { [K in keyof AIHubVoiceModel]: boolean } = {
   version: false,
   derivedModelId: true,
   checksumMD5ForWeights: false,
-  // Add more fields
-  createdById: false,
-  createdDate: false,
-  updatedById: false,
-  updatedDate: false,
-  isDeleted: false,
 };
 
 builder.mutationField("updateAIHubVoiceModel", (t) =>

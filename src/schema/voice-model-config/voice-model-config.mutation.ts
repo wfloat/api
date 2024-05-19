@@ -58,7 +58,10 @@ UpdateVoiceModelConfigInput.implement({
 });
 type UpdateVoiceModelConfigInputShape = typeof UpdateVoiceModelConfigInput.$inferInput;
 
-const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = {
+const VoiceModelConfigNullability: { [K in keyof Omit<
+  VoiceModelConfig,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   qualityScore: false,
   f0Curve: false,
@@ -70,12 +73,6 @@ const VoiceModelConfigNullability: { [K in keyof VoiceModelConfig]: boolean } = 
   volumeEnvelopeScaling: false,
   artifactProtection: false,
   voiceModelId: false,
-  // Added
-  createdDate: false,
-  updatedDate: false,
-  createdById: false,
-  updatedById: false,
-  isDeleted: false
 };
 
 builder.mutationField("updateVoiceModelConfig", (t) =>

@@ -37,6 +37,19 @@ builder.prismaObject("VoiceModel", {
       resolve: async (query, root, args, context, info) =>
         await context.loaders.SourceModelFromVoiceModel.load(root.id),
     }),
+    createdBy: t.relation("createdBy", {
+      nullable: true,
+      resolve: async (query, root, args, context, info) =>
+        root.updatedById ? await context.loaders.User.load(root.updatedById) : null,
+      
+    }),
+    updatedBy: t.relation("updatedBy", {
+      nullable: true,
+      resolve: async (query, root, args, context, info) =>
+        root.updatedById ? await context.loaders.User.load(root.updatedById) : null,
+      
+    }),
+
 
     // // Connections
     // textToSpeeches: t.prismaConnection(

@@ -42,6 +42,16 @@ model User {
 
   textToSpeechCreated TextToSpeech[] @relation("TextToSpeechCreatedBy")
   textToSpeechUpdated TextToSpeech[] @relation("TextToSpeechUpdatedBy")
+
+  createdBy   User?     @relation(fields: [createdById], references: [id], name: "UserCreatedBy")
+  updatedBy   User?     @relation(fields: [updatedById], references: [id], name: "UserUpdatedBy")
+  createdDate DateTime?
+  updatedDate DateTime?
+  createdById String?   @db.Uuid
+  updatedById String?   @db.Uuid
+  isDeleted   Boolean?
+  userCreated User[]    @relation("UserCreatedBy")
+  userUpdated User[]    @relation("UserUpdatedBy")
 }
 
 model VoiceModel {

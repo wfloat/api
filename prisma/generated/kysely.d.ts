@@ -35,6 +35,11 @@ export type User = {
     id: Generated<string>;
     accessKey: string;
     name: string;
+    createdDate: Timestamp | null;
+    updatedDate: Timestamp | null;
+    createdById: string | null;
+    updatedById: string | null;
+    isDeleted: boolean | null;
 };
 export type VoiceModel = {
     id: Generated<string>;

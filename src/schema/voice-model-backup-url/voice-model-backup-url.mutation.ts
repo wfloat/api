@@ -42,16 +42,13 @@ UpdateVoiceModelBackupUrlInput.implement({
 });
 type UpdateVoiceModelBackupUrlInputShape = typeof UpdateVoiceModelBackupUrlInput.$inferInput;
 
-const VoiceModelBackupUrlNullability: { [K in keyof VoiceModelBackupUrl]: boolean } = {
+const VoiceModelBackupUrlNullability: { [K in keyof Omit<
+  VoiceModelBackupUrl,
+  "createdById" | "updatedById" | "createdDate" | "updatedDate" | "isDeleted"
+>]: boolean } = {
   id: false,
   url: false,
   voiceModelId: false,
-  // Added
-  createdDate: false,
-  updatedDate: false,
-  createdById: false,
-  updatedById: false,
-  isDeleted: false
 };
 
 builder.mutationField("updateVoiceModelBackupUrl", (t) =>
